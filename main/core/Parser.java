@@ -125,11 +125,13 @@ public class Parser {
 
                 for (int i = 0; i < n.NeighbourList.size(); i++) {
 
-                    System.out.println("Index des NAchbarn:" + n.NeighbourList.get(i).NodeIndex);
+                    System.out.println("Index des Nachbarn:" + n.NeighbourList.get(i).NodeIndex);
                 }
             }
 
+            g.sortNodeList();
             g.printIncidentMatrix();
+           // g.printAdjacentMatrix();
 
             /*
              * int graphNodeCount = 0;
