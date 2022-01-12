@@ -29,23 +29,23 @@ public class Parser {
                     graphNodeCount = Integer.parseInt(data);
                 } else {
                     // Connection of Nodes. Seperation of Nodes done by Whitespace e.g 1 2
-                    String[] nodeArr = data.split("\\s+");
+                    String[] rowData = data.split("\\s+");
 
                     // 1 -- 2 , 2 is neighbour of 1 but not other way around
 
                     Node rowNode = null;
                     Node rowNode2 = null;
 
-                    if (nodeArr.length == 2) { 
-                        rowNode = new Node(Integer.parseInt(nodeArr[0]));
-                        rowNode2 = new Node(Integer.parseInt(nodeArr[1]));
+                    if (rowData.length == 2) { 
+                        rowNode = new Node(Integer.parseInt( rowData[0]));
+                        rowNode2 = new Node(Integer.parseInt( rowData[1]));
 
                     }
 
-                    else if (nodeArr.length == 3) {
+                    else if (rowData.length == 3) {
 
-                        rowNode = new Node(Integer.parseInt(nodeArr[0]));
-                        rowNode2 = new Node(Integer.parseInt(nodeArr[2]));
+                        rowNode = new Node(Integer.parseInt(rowData[0]));
+                        rowNode2 = new Node(Integer.parseInt(rowData[2]));
                     }
                 
                         boolean hasRowNode = false;
@@ -76,29 +76,35 @@ public class Parser {
 
                             g.NodeList.add(rowNode2);
                         }
-
+                        
+                        //Adding Neighbours 
                         for (int i = 0; i < g.NodeList.size(); i++) {
 
                             if (rowNode.NodeIndex == g.NodeList.get(i).NodeIndex) {
-                                // Vorrausgesetzt keine parallelkante
+                                // Vorrausgesetzt keine parallelkante und selbstkante
                                 g.NodeList.get(i).NeighbourList.add(rowNode2);
-                                break;
+  
+                            }
+
+                            if(rowNode2.NodeIndex == g.NodeList.get(i).NodeIndex) {
+                             
+                                g.NodeList.get(i).NeighbourList.add(rowNode);
                             }
                         }
 
                         Edge e = null;
 
                         
-                    if (nodeArr.length == 2) { 
+                    if (rowData.length == 2) { 
 
                       e = new Edge(rowNode, rowNode2);
 
 
                     }
 
-                    else if (nodeArr.length == 3) {
+                    else if (rowData.length == 3) {
 
-                        e = new Edge(rowNode, rowNode2,Float.parseFloat(nodeArr[1]));
+                        e = new Edge(rowNode, rowNode2,Float.parseFloat(rowData[1]));
 
                     }
                         g.EdgeList.add(e);
@@ -122,6 +128,8 @@ public class Parser {
                     System.out.println("Index des NAchbarn:" + n.NeighbourList.get(i).NodeIndex);
                 }
             }
+
+            g.printIncidentMatrix();
 
             /*
              * int graphNodeCount = 0;
