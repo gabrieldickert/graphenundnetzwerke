@@ -130,7 +130,8 @@ public class Parser {
             }
 
             g.sortNodeList();
-            g.printIncidentMatrix();
+            g.printAdjacentList();
+            //g.printIncidentMatrix();
            // g.printAdjacentMatrix();
 
             /*

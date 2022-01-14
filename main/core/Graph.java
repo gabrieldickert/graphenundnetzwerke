@@ -1,10 +1,12 @@
 package main.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
-import org.w3c.dom.NodeList;
+
 
 public class Graph {
 
@@ -14,6 +16,7 @@ public class Graph {
     public boolean isUndirected;
     public int [][] incidentMat;
     public int [][] adjacentMat;
+    public HashMap<Node,ArrayList> adjacentList;
 
     public Graph( boolean isWeighted,boolean isUndirected) {
 
@@ -77,6 +80,37 @@ public class Graph {
         }
 
         printMatrix(adjacentMat);
+
+    }
+
+
+    public void printAdjacentList() {
+
+        adjacentList = new HashMap<>();
+
+        for(Node n : NodeList) {
+
+            adjacentList.put(n, n.NeighbourList);
+        }
+
+
+        /*for(int i = 0; i < adjacentList.get(NodeList.get(0).NeighbourList).size();i++) {
+        Node n = (Node) adjacentList.get(NodeList.get(0)).get(i);
+        System.out.println("Nachbar node von dem ersten Node ist " + n.NodeIndex);
+        }*/
+/*
+        adjacentList.entrySet().forEach(entry -> {
+
+            System.out.println("DER Nodeindex"+entry.getKey().NodeIndex);
+
+            for(int i = 0; i < entry.getValue().size();i++) {
+
+                Node lol =  (Node) entry.getValue().get(i);
+                System.out.println("ENTHÄHLT KNOTEN"+lol.NodeIndex);
+
+            }
+        });*/
+
 
     }
 

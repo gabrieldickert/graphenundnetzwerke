@@ -9,6 +9,8 @@ public class Main {
         Parser P = new Parser();
 
         Graph g = P.parseGraphFromInput("input/k5.txt");
+
+        GraphExporter.exportGraphToDOT(g, "petersen.dot");
          //g = P.parseGraphFromInput("input/k3_3.txt");
         // g = P.parseGraphFromInput("input/petersen.txt");
         /*

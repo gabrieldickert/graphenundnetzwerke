@@ -1,2 +1,0 @@
-# graphen-und-netze
-
