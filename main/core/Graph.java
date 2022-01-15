@@ -17,7 +17,7 @@ public class Graph {
     public boolean isUndirected;
     public int[][] incidentMat;
     public int[][] adjacentMat;
-    public LinkedHashMap<Node, ArrayList> adjacentList;
+    public LinkedHashMap<Node, ArrayList<Node>> adjacentList;
 
     public Graph(boolean isWeighted, boolean isUndirected) {
 
@@ -92,6 +92,17 @@ public class Graph {
             adjacentList.put(n, n.NeighbourList);
         }
 
+        adjacentList.entrySet().forEach(entry -> {
+
+            System.out.println("DER Nodeindex" + entry.getKey().NodeIndex);
+
+            for (int i = 0; i < entry.getValue().size(); i++) {
+
+                Node lol = (Node) entry.getValue().get(i);
+                System.out.println("ENTHÄHLT KNOTEN" + lol.NodeIndex);
+
+            }
+        });
     }
 
     public void printMatrix(int[][] m) {

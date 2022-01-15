@@ -86,10 +86,10 @@ public class Parser {
 
                         }
 
-                        if (rowNode2.NodeIndex == g.NodeList.get(i).NodeIndex) {
+                        // if (rowNode2.NodeIndex == g.NodeList.get(i).NodeIndex) {
 
-                            g.NodeList.get(i).NeighbourList.add(rowNode);
-                        }
+                        // g.NodeList.get(i).NeighbourList.add(rowNode);
+                        // }
                     }
 
                     Edge e = null;
@@ -114,15 +114,18 @@ public class Parser {
             System.out.println("Anzahl Kanten:" + g.EdgeList.size());
             System.out.println("Anzahl Knoten:" + g.NodeList.size());
 
-            for (Node n : g.NodeList) {
-
-                System.out.println("Node mit der ID:" + n.NodeIndex + "hat folgende Nachbarn:");
-
-                for (int i = 0; i < n.NeighbourList.size(); i++) {
-
-                    System.out.println("Index des Nachbarn:" + n.NeighbourList.get(i).NodeIndex);
-                }
-            }
+            /*
+             * for (Node n : g.NodeList) {
+             * 
+             * System.out.println("Node mit der ID: " + n.NodeIndex +
+             * "hat folgende Nachbarn:");
+             * 
+             * for (int i = 0; i < n.NeighbourList.size(); i++) {
+             * 
+             * System.out.println("Index des Nachbarn:" + n.NeighbourList.get(i).NodeIndex);
+             * }
+             * }
+             */
 
             g.sortNodeList();
             g.fillAdjacentList();
