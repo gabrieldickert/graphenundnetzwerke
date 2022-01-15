@@ -36,9 +36,9 @@ public class Parser {
                     Node rowNode = null;
                     Node rowNode2 = null;
 
-                    if (rowData.length == 2) { 
-                        rowNode = new Node(Integer.parseInt( rowData[0]));
-                        rowNode2 = new Node(Integer.parseInt( rowData[1]));
+                    if (rowData.length == 2) {
+                        rowNode = new Node(Integer.parseInt(rowData[0]));
+                        rowNode2 = new Node(Integer.parseInt(rowData[1]));
 
                     }
 
@@ -47,73 +47,68 @@ public class Parser {
                         rowNode = new Node(Integer.parseInt(rowData[0]));
                         rowNode2 = new Node(Integer.parseInt(rowData[2]));
                     }
-                
-                        boolean hasRowNode = false;
-                        boolean hasRowNode2 = false;
-                        for (int i = 0; i < g.NodeList.size(); i++) {
 
-                            if (g.NodeList.get(i).NodeIndex == rowNode.NodeIndex) {
+                    boolean hasRowNode = false;
+                    boolean hasRowNode2 = false;
+                    for (int i = 0; i < g.NodeList.size(); i++) {
 
-                                hasRowNode = true;
-                            }
+                        if (g.NodeList.get(i).NodeIndex == rowNode.NodeIndex) {
 
-                            if (g.NodeList.get(i).NodeIndex == rowNode2.NodeIndex) {
+                            hasRowNode = true;
+                        }
 
-                                hasRowNode2 = true;
-                            }
+                        if (g.NodeList.get(i).NodeIndex == rowNode2.NodeIndex) {
 
-                            if (hasRowNode && hasRowNode2) {
-                                break;
-                            }
+                            hasRowNode2 = true;
+                        }
+
+                        if (hasRowNode && hasRowNode2) {
+                            break;
+                        }
+
+                    }
+
+                    if (!hasRowNode) {
+                        g.NodeList.add(rowNode);
+                    }
+
+                    if (!hasRowNode2) {
+
+                        g.NodeList.add(rowNode2);
+                    }
+
+                    // Adding Neighbours
+                    for (int i = 0; i < g.NodeList.size(); i++) {
+
+                        if (rowNode.NodeIndex == g.NodeList.get(i).NodeIndex) {
+                            // Vorrausgesetzt keine parallelkante und selbstkante
+                            g.NodeList.get(i).NeighbourList.add(rowNode2);
 
                         }
 
-                        if (!hasRowNode) {
-                            g.NodeList.add(rowNode);
+                        if (rowNode2.NodeIndex == g.NodeList.get(i).NodeIndex) {
+
+                            g.NodeList.get(i).NeighbourList.add(rowNode);
                         }
+                    }
 
-                        if (!hasRowNode2) {
+                    Edge e = null;
 
-                            g.NodeList.add(rowNode2);
-                        }
-                        
-                        //Adding Neighbours 
-                        for (int i = 0; i < g.NodeList.size(); i++) {
+                    if (rowData.length == 2) {
 
-                            if (rowNode.NodeIndex == g.NodeList.get(i).NodeIndex) {
-                                // Vorrausgesetzt keine parallelkante und selbstkante
-                                g.NodeList.get(i).NeighbourList.add(rowNode2);
-  
-                            }
-
-                            if(rowNode2.NodeIndex == g.NodeList.get(i).NodeIndex) {
-                             
-                                g.NodeList.get(i).NeighbourList.add(rowNode);
-                            }
-                        }
-
-                        Edge e = null;
-
-                        
-                    if (rowData.length == 2) { 
-
-                      e = new Edge(rowNode, rowNode2);
-
+                        e = new Edge(rowNode, rowNode2);
 
                     }
 
                     else if (rowData.length == 3) {
 
-                        e = new Edge(rowNode, rowNode2,Float.parseFloat(rowData[1]));
+                        e = new Edge(rowNode, rowNode2, Float.parseFloat(rowData[1]));
 
                     }
-                        g.EdgeList.add(e);
+                    g.EdgeList.add(e);
 
-                    }
+                }
 
-                
-
-         
                 lineCounter++;
             }
             System.out.println("Anzahl Kanten:" + g.EdgeList.size());
@@ -130,9 +125,9 @@ public class Parser {
             }
 
             g.sortNodeList();
-            g.printAdjacentList();
-            //g.printIncidentMatrix();
-           // g.printAdjacentMatrix();
+            g.fillAdjacentList();
+            // g.printIncidentMatrix();
+            // g.printAdjacentMatrix();
 
             /*
              * int graphNodeCount = 0;
