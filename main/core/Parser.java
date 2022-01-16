@@ -50,6 +50,7 @@ public class Parser {
 
                     boolean hasRowNode = false;
                     boolean hasRowNode2 = false;
+
                     for (int i = 0; i < g.NodeList.size(); i++) {
 
                         if (g.NodeList.get(i).NodeIndex == rowNode.NodeIndex) {
@@ -82,27 +83,49 @@ public class Parser {
 
                         if (rowNode.NodeIndex == g.NodeList.get(i).NodeIndex) {
                             // Vorrausgesetzt keine parallelkante und selbstkante
-                            g.NodeList.get(i).NeighbourList.add(rowNode2);
+                            for(int j = 0; j < g.NodeList.size();j++) {
+                                if(g.NodeList.get(j).NodeIndex == rowNode2.NodeIndex) {
+                                    g.NodeList.get(i).NeighbourList.add(g.NodeList.get(j));
+                                    break;
+                                }
+                            }
+                         
 
                         }
 
-                        // if (rowNode2.NodeIndex == g.NodeList.get(i).NodeIndex) {
 
-                        // g.NodeList.get(i).NeighbourList.add(rowNode);
-                        // }
                     }
 
                     Edge e = null;
 
                     if (rowData.length == 2) {
 
-                        e = new Edge(rowNode, rowNode2);
+                        Node n1 = null;
+                        Node n2 = null;
+                        
+                        for(Node n : g.NodeList) {
+
+                            if(n.NodeIndex == rowNode.NodeIndex) {
+                                n1 = n;
+
+                            }
+
+                            else if(n.NodeIndex == rowNode2.NodeIndex) {
+
+                                n2 = n;
+                            }
+                        }
+
+                        if(n1!=null && n2!=null) {
+                            e = new Edge(n1, n2); 
+                        }
+                      //  e = new Edge(rowNode, rowNode2);
 
                     }
 
                     else if (rowData.length == 3) {
 
-                        e = new Edge(rowNode, rowNode2, Float.parseFloat(rowData[1]));
+                        //e = new Edge(rowNode, rowNode2, Float.parseFloat(rowData[1]));
 
                     }
                     g.EdgeList.add(e);

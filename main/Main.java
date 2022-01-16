@@ -10,9 +10,9 @@ public class Main {
 
         Parser P = new Parser();
 
-        Graph g = P.parseGraphFromInput("input/test.txt");
+        Graph g = P.parseGraphFromInput("input/test2.txt");
 
-        GraphExporter.exportGraphToDOT(g, "test.dot");
+        GraphExporter.exportGraphToDOT(g, "test2.dot");
 
         ArrayList<Node> dfsList = DFS.printDFS(g);
 

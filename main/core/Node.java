@@ -6,6 +6,7 @@ public class Node {
 
     public int NodeIndex;
     public ArrayList<Node> NeighbourList;
+    //DFS props
     boolean visited = false;
     int discoverTime = 0;
     int finishedTime = 0;

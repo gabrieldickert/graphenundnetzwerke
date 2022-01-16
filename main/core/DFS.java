@@ -2,79 +2,65 @@ package main.core;
 
 import java.util.ArrayList;
 import java.util.Stack;
-
+import java.util.*;
 public class DFS {
 
     public static int totalTime = 0;
     public static ArrayList<Node> dfsNodes = new ArrayList<>();
 
+
     public static ArrayList<Node> printDFS(Graph g) {
+ 
+    Stack<Node> nodeStack = new Stack<Node>();
 
-        Stack<Node> stack = new Stack<>();
+        for(Node n : g.NodeList) {
 
-        for (int i = g.NodeList.size() - 1; i >= 0; i--) {
-            stack.push(g.NodeList.get(i));
+            if(!n.visited) {
+                DFSVist(n,nodeStack);
+            }
+
+        }
+        
+        while (!nodeStack.empty()) {
+
+            dfsNodes.add(nodeStack.pop());
         }
 
-        stack.forEach(k -> {
-            System.out.println("" + k.NodeIndex);
-        });
-
-        Node firstDFSnode = stack.lastElement();
-
-        while (!stack.empty()) {
-
-            DFSvisit(g, firstDFSnode, stack);
-        }
-
-        // DFS.dfsNodes.add(firstDFSnode);
-
-        System.out.println("Total time: " + DFS.totalTime);
 
         return dfsNodes;
     }
 
-    public static void DFSvisit(Graph g, Node n, Stack<Node> stack) {
-        System.out.println(n.NodeIndex + " hat visited: " + n.visited);
-        if (!n.visited) {
-            n.visited = true;
-            DFS.dfsNodes.add(n);
-        }
+    public static void DFSVist(Node n,Stack<Node> nodeStack) {
 
+     
+      
         DFS.totalTime++;
+
         n.discoverTime = DFS.totalTime;
+        System.out.println("Discovertime von Knoten"+n.NodeIndex+" beträgt "+n.discoverTime);
 
-        ArrayList<Node> nNeighborList = g.adjacentList.get(g.NodeList.get(n.NodeIndex - 1));
+        n.visited = true;
 
-        if (nNeighborList.size() == 0) {
-            System.out.println(n.NodeIndex + " hat keine Nachbarn");
-            System.out.println("gepopptes element: " + stack.pop().NodeIndex);
-            if (!stack.empty()) {
-                DFSvisit(g, stack.lastElement(), stack);
+        ArrayList<Node> nNeighborList = n.NeighbourList;
+
+        for(Node neighbour :  nNeighborList) {
+
+            if(!neighbour.visited) {
+                neighbour.preNode = n;
+                DFSVist(neighbour, nodeStack);
             }
-
         }
 
-        for (Node nNeighbor : nNeighborList) {
-
-            if (nNeighbor.visited == false) {
-
-                nNeighbor.preNode = n;
-
-                System.out.println("Node " + n.NodeIndex + " besucht " + nNeighbor.NodeIndex);
-                n.discoverTime = DFS.totalTime;
-
-                DFSvisit(g, nNeighbor, stack);
-            }
-
-        }
-
+        nodeStack.push(n);
         DFS.totalTime++;
+        n.finishedTime = DFS.totalTime;
+        System.out.println("Finish von Knoten"+n.NodeIndex+" beträgt "+n.finishedTime);
 
-        // System.out.println("Node " + n.NodeIndex + " finished time " +
-        // n.finishedTime = DFS.totalTime;
 
-        // stack.pop();
+
+
 
     }
+
+
 }
