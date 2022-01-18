@@ -10,13 +10,14 @@ public class Main {
 
         Parser P = new Parser();
 
-        Graph g = P.parseGraphFromInput("input/test2.txt");
+        Graph g = P.parseGraphFromInput("input/k5.txt");
 
-        GraphExporter.exportGraphToDOT(g, "test2.dot");
+        GraphExporter.exportGraphToDOT(g, "test.dot");
 
         ArrayList<Node> dfsList = DFS.printDFS(g);
-
+        System.out.print("TopSort: ");
         for (Node n : dfsList) {
+            
             System.out.print(n.NodeIndex + " ");
         }
 
