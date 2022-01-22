@@ -125,7 +125,7 @@ public class Parser {
 
                     else if (rowData.length == 3) {
 
-                        //e = new Edge(rowNode, rowNode2, Float.parseFloat(rowData[1]));
+                        e = new Edge(rowNode, rowNode2, Float.parseFloat(rowData[1]));
 
                     }
                     g.EdgeList.add(e);

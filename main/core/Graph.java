@@ -129,4 +129,10 @@ public class Graph {
         Collections.sort(NodeList, compareById);
     }
 
+    public void sortEdgeList() {
+
+        Comparator<Edge> compareByWeight = (Edge e1, Edge e2) -> Float.compare(e1.weight,e2.weight);
+        Collections.sort(EdgeList, compareByWeight);
+    }
+
 }
