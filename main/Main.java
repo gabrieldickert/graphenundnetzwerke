@@ -12,9 +12,27 @@ public class Main {
         Parser P = new Parser();
 
         Graph g = P.parseGraphFromInput("input/lordgraph.txt");
+ 
+
+
+        for(int i = 0; i <1;i++) {
+
+            for(int j = 0; j < g.NodeList.get(i).EdgeList.size();j++) {
+
+                System.out.println("Knoten "+g.NodeList.get(i).NodeIndex+" hat Kante von "
+                +g.NodeList.get(i).EdgeList.get(j).a.NodeIndex+" zu " 
+                +g.NodeList.get(i).EdgeList.get(j).b.NodeIndex
+                +" mit weight: "+g.NodeList.get(i).EdgeList.get(j).weight);
+            }
+
+   
+        }
 
         GraphExporter.exportGraphToDOT(g, "test.dot");
 
+      //  PathFinding.performDijkstra(g, g.NodeList.get(0));
+
+        /*
         LinkedList<Edge> BAUM =  Kruskal.performKruskal(g);
 
 
@@ -22,7 +40,7 @@ public class Main {
 
             System.out.println(""+e.a.NodeIndex+"--"+e.b.NodeIndex+" -> "+e.weight);
         }
-
+*/
 
 
         

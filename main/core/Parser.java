@@ -118,6 +118,8 @@ public class Parser {
 
                         if(n1!=null && n2!=null) {
                             e = new Edge(n1, n2); 
+                            n1.EdgeList.add(e);
+                            n2.EdgeList.add(e);
                         }
                       //  e = new Edge(rowNode, rowNode2);
 
@@ -126,6 +128,9 @@ public class Parser {
                     else if (rowData.length == 3) {
 
                         e = new Edge(rowNode, rowNode2, Float.parseFloat(rowData[1]));
+
+                        rowNode.EdgeList.add(e);
+                        rowNode2.EdgeList.add(e);
 
                     }
                     g.EdgeList.add(e);
