@@ -76,7 +76,7 @@ public class Kruskal {
 		
         tree1.addAll(tree2);
 
-        forest.remove(tree2);
+        forest.remove(n2.NodeIndex);
 
 	}
 
