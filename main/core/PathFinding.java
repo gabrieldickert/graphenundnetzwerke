@@ -2,62 +2,82 @@ package main.core;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class PathFinding {
 
+    public static void initSingleSource(Graph g, Node startPoint) {
 
-    public static void initSingleSource(Graph g,Node startPoint) {
+        for (Node n : g.NodeList) {
 
-        for(Node n: g.NodeList) {
-
-            n.d = Integer.MAX_VALUE;
+            n.d = 10000;
             n.preNodeShortestPath = null;
 
         }
-        //Startpoint gets distance 0
+        // Startpoint gets distance 0
         startPoint.d = 0;
 
-
     }
 
+    public static void relax(Edge e) {
 
-    public static void Relax(Node u,Node v,float w) {
-
-
+        if (e.b.d > e.a.d + (int) e.weight) {
+            e.b.d = e.a.d + (int) e.weight;
+            e.b.preNodeShortestPath = e.a;
+        }
     }
 
+    public static HashMap<Node, Integer> performDijkstra(Graph g, Node s) {
 
-    public static HashMap<Node,Integer> performDijkstra(Graph g, Node s) {
+        HashMap<Node, Boolean> visitedList = new HashMap<Node, Boolean>();
 
-        HashMap<Node,Boolean> visitedList = new HashMap<Node,Boolean>();
+        HashMap<Node, Integer> returnMap = new HashMap<Node, Integer>();
 
-        HashMap<Node,Integer> returnMap = new HashMap<Node,Integer>();
+        initSingleSource(g, s);
 
-        initSingleSource(g,s);
+        PriorityQueue<Node> waitqueue = new PriorityQueue<Node>(g.NodeList.size(), (a, b) -> a.d - b.d);
 
-        Queue<Node> waitqueue = new LinkedList<Node>(g.NodeList);
+        for (Node node : g.NodeList) {
+            waitqueue.add(node);
+        }
 
-        while(!waitqueue.isEmpty()) {
-            
-            LinkedList<Edge> edgeList = s.EdgeList;
+        while (!waitqueue.isEmpty()) {
 
-            for(Edge e : edgeList) {
+            Node u = extractMin(waitqueue);
 
-                
+            LinkedList<Edge> edgeList = u.EdgeList;
 
+            returnMap.put(u, u.d);
+
+            for (Edge e : edgeList) {
+                System.out.println("HIIIEEER " + e.a + " " + e.b.NodeIndex);
+                relax(e);
             }
+
+            edgeList.removeIf(e -> e.a.equals(u));
 
         }
 
         return returnMap;
     }
 
- /*   public static Edge extractMin(Graph g,Node a) {
+    public static Node extractMin(Queue<Node> q) {
 
-    }*/
+        Node polledNode = q.poll();
 
+        if (q.size() > 0) {
+            PriorityQueue<Node> newWaitQueue = new PriorityQueue<Node>(q.size(), (a, b) -> a.d - b.d);
 
-        
+            for (Node node : q) {
+                newWaitQueue.add(node);
+            }
+
+            q = newWaitQueue;
+        }
+
+        return polledNode;
+
+    }
 
 }

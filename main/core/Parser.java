@@ -83,16 +83,14 @@ public class Parser {
 
                         if (rowNode.NodeIndex == g.NodeList.get(i).NodeIndex) {
                             // Vorrausgesetzt keine parallelkante und selbstkante
-                            for(int j = 0; j < g.NodeList.size();j++) {
-                                if(g.NodeList.get(j).NodeIndex == rowNode2.NodeIndex) {
+                            for (int j = 0; j < g.NodeList.size(); j++) {
+                                if (g.NodeList.get(j).NodeIndex == rowNode2.NodeIndex) {
                                     g.NodeList.get(i).NeighbourList.add(g.NodeList.get(j));
                                     break;
                                 }
                             }
-                         
 
                         }
-
 
                     }
 
@@ -102,35 +100,41 @@ public class Parser {
 
                         Node n1 = null;
                         Node n2 = null;
-                        
-                        for(Node n : g.NodeList) {
 
-                            if(n.NodeIndex == rowNode.NodeIndex) {
+                        for (Node n : g.NodeList) {
+
+                            if (n.NodeIndex == rowNode.NodeIndex) {
                                 n1 = n;
 
                             }
 
-                            else if(n.NodeIndex == rowNode2.NodeIndex) {
+                            else if (n.NodeIndex == rowNode2.NodeIndex) {
 
                                 n2 = n;
                             }
                         }
 
-                        if(n1!=null && n2!=null) {
-                            e = new Edge(n1, n2); 
+                        if (n1 != null && n2 != null) {
+                            e = new Edge(n1, n2);
                             n1.EdgeList.add(e);
                             n2.EdgeList.add(e);
                         }
-                      //  e = new Edge(rowNode, rowNode2);
+                        // e = new Edge(rowNode, rowNode2);
 
                     }
 
                     else if (rowData.length == 3) {
 
                         e = new Edge(rowNode, rowNode2, Float.parseFloat(rowData[1]));
-
                         rowNode.EdgeList.add(e);
                         rowNode2.EdgeList.add(e);
+
+                        System.out.println(
+                                "ROWNODE ONE " + rowNode.EdgeList.get(0).a.NodeIndex + " " + rowNode.EdgeList.get(0).a);
+
+                        System.out.println(
+                                "ROWNODE TWO " + rowNode2.EdgeList.get(0).a.NodeIndex + " "
+                                        + rowNode2.EdgeList.get(0).a);
 
                     }
                     g.EdgeList.add(e);
@@ -156,7 +160,7 @@ public class Parser {
              */
 
             g.sortNodeList();
-            g.fillAdjacentList();
+            // g.fillAdjacentList();
             // g.printIncidentMatrix();
             // g.printAdjacentMatrix();
 
