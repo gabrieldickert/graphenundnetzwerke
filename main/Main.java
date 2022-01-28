@@ -12,8 +12,9 @@ public class Main {
 
         Parser P = new Parser();
 
-        Graph g = P.parseGraphFromInput("input/dreieck.txt");
+        Graph g = P.parseGraphFromInput("input/dijkstra.txt");
 
+        /*
         for (int i = 0; i < 1; i++) {
 
             for (int j = 0; j < g.NodeList.get(i).EdgeList.size(); j++) {
@@ -24,15 +25,17 @@ public class Main {
                         + " mit weight: " + g.NodeList.get(i).EdgeList.get(j).weight);
             }
 
-        }
+        }*/
 
-        GraphExporter.exportGraphToDOT(g, "test.dot");
+  GraphExporter.exportGraphToDOT(g, "test.dot");
 
         HashMap<Node, Integer> dijkstraResult = PathFinding.performDijkstra(g, g.NodeList.get(0));
 
         for (Node n : dijkstraResult.keySet()) {
             System.out.println(n.NodeIndex + " " + n.d);
         }
+
+
         /*
          * LinkedList<Edge> BAUM = Kruskal.performKruskal(g);
          * 

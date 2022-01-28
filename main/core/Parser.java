@@ -126,18 +126,9 @@ public class Parser {
                     else if (rowData.length == 3) {
 
                         e = new Edge(rowNode, rowNode2, Float.parseFloat(rowData[1]));
-                        rowNode.EdgeList.add(e);
-                        rowNode2.EdgeList.add(e);
-
-                        System.out.println(
-                                "ROWNODE ONE " + rowNode.EdgeList.get(0).a.NodeIndex + " " + rowNode.EdgeList.get(0).a);
-
-                        System.out.println(
-                                "ROWNODE TWO " + rowNode2.EdgeList.get(0).a.NodeIndex + " "
-                                        + rowNode2.EdgeList.get(0).a);
-
+   
                     }
-                    g.EdgeList.add(e);
+                    g.ParsingEdgeList.add(e);
 
                 }
 
@@ -160,6 +151,7 @@ public class Parser {
              */
 
             g.sortNodeList();
+            g.extractRealEdges();
             // g.fillAdjacentList();
             // g.printIncidentMatrix();
             // g.printAdjacentMatrix();

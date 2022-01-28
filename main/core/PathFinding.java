@@ -11,7 +11,7 @@ public class PathFinding {
 
         for (Node n : g.NodeList) {
 
-            n.d = 10000;
+            n.d = 10000; //"infinite"
             n.preNodeShortestPath = null;
 
         }
@@ -51,7 +51,7 @@ public class PathFinding {
             returnMap.put(u, u.d);
 
             for (Edge e : edgeList) {
-                System.out.println("HIIIEEER " + e.a + " " + e.b.NodeIndex);
+
                 relax(e);
             }
 

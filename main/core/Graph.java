@@ -1,17 +1,16 @@
 package main.core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.LinkedList;
+
 
 public class Graph {
 
     public ArrayList<Edge> EdgeList;
+    public LinkedList<Edge> ParsingEdgeList;
     public ArrayList<Node> NodeList;
     public boolean isWeighted;
     public boolean isUndirected;
@@ -21,12 +20,48 @@ public class Graph {
 
     public Graph(boolean isWeighted, boolean isUndirected) {
 
+        ParsingEdgeList = new LinkedList<Edge>();
         EdgeList = new ArrayList<Edge>();
         NodeList = new ArrayList<Node>();
 
         this.isWeighted = isWeighted;
         this.isUndirected = isUndirected;
 
+    }
+
+    public void extractRealEdges() {
+
+        for(Edge e : ParsingEdgeList) {
+            int nodeIndexA = getIndexOfNode(e.a.NodeIndex);
+            int nodeIndexB = getIndexOfNode(e.b.NodeIndex);
+            if( nodeIndexA!=-1 && nodeIndexB!=-1) {
+
+                Node a  = NodeList.get(nodeIndexA);
+                Node b =  NodeList.get(nodeIndexB);
+                Edge realEdge = new Edge(a,b,e.weight);
+
+                a.EdgeList.add(realEdge);
+                b.EdgeList.add(realEdge);
+                EdgeList.add(e);
+
+            }
+
+        }
+
+    }
+
+    public int getIndexOfNode(int NodeIndex) {
+
+        for(int i = 0; i < NodeList.size();i++) {
+
+            if(NodeList.get(i).NodeIndex == NodeIndex) {
+                return i;
+            }
+        }
+
+        return -1;
+        
+    
     }
 
     public void printIncidentMatrix() {
