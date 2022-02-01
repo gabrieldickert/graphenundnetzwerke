@@ -3,54 +3,74 @@ package main.core;
 import java.io.*;
 import java.util.Scanner;
 
+/**
+ * Simple Parsing class for reading the benchmark Graphs and resolve them to the
+ * given graph structure.
+ */
+
 public class Parser {
 
+    /**
+     * Default Constructor for Parser
+     */
     public Parser() {
 
     }
 
+    /**
+     * Parses a Graph from the given file.
+     * 
+     * @param inputFile filepath to the given graphfile.
+     * @return an instantiated graph containg the informations about the given
+     *         graphfile.
+     */
     public Graph parseGraphFromInput(String inputFile) {
 
-        System.out.print("Input von File" + inputFile + "\n");
-        // We dont know if graph is weighted or directed in advance
+        // We dont know if graph is weighted or directed in advance, we have to tailor
+        // it to our usecase
         Graph g = new Graph(false, false);
 
         try {
-            File myObj = new File(inputFile);
-            Scanner myReader = new Scanner(myObj);
+            // Create Graphfile
+            File graphFile = new File(inputFile);
+            // Create Scanner
+            Scanner graphFileReader = new Scanner(graphFile);
+            // Init 0 Nodes
             int graphNodeCount = 0;
+            // Counter for readed lines
             int lineCounter = 0;
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-
+            // Reading every line from the textfile containg the graph
+            while (graphFileReader.hasNextLine()) {
+                // Current data of the readed Line
+                String data = graphFileReader.nextLine();
                 // First line represents the Total Node Count
                 if (lineCounter == 0) {
-
+                    // Sets the total Nodecount for this graph.
                     graphNodeCount = Integer.parseInt(data);
                 } else {
-                    // Connection of Nodes. Seperation of Nodes done by Whitespace e.g 1 2
+                    // Splitting Entry of line(row). Seperation of line done by Whitespace
                     String[] rowData = data.split("\\s+");
-
-                    // 1 -- 2 , 2 is neighbour of 1 but not other way around
-
+                    //a line at index > 0 always contains atleast two nodes. Therefore two Nodes are init with null in advance.
                     Node rowNode = null;
                     Node rowNode2 = null;
-
+                    //a line can be "simply" an unweighted edge therefore the length of the line is only 2. 
                     if (rowData.length == 2) {
+                        //Parsing Nodeinicies from the line
                         rowNode = new Node(Integer.parseInt(rowData[0]));
                         rowNode2 = new Node(Integer.parseInt(rowData[1]));
 
-                    }
-
+                    } 
+                    //if the length of the current line is 3, the second Nodeindex is at index 2 of the splitted array.
                     else if (rowData.length == 3) {
 
                         rowNode = new Node(Integer.parseInt(rowData[0]));
                         rowNode2 = new Node(Integer.parseInt(rowData[2]));
                     }
-
+                    //Flags for checking if Node is already part of the Nodelist of the internal graph representation.(Ensures avoiding duplicates with different mem adresses!)
                     boolean hasRowNode = false;
                     boolean hasRowNode2 = false;
 
+                    //Checking Nodelist of the Graph for current row Nodes.
                     for (int i = 0; i < g.NodeList.size(); i++) {
 
                         if (g.NodeList.get(i).NodeIndex == rowNode.NodeIndex) {
@@ -62,23 +82,23 @@ public class Parser {
 
                             hasRowNode2 = true;
                         }
-
+                        //Both rownodes have been found => Loop can be stopped here.
                         if (hasRowNode && hasRowNode2) {
                             break;
                         }
 
                     }
-
+                    //If first Node isn´t already in the Nodelist of the Graph we can add it.
                     if (!hasRowNode) {
                         g.NodeList.add(rowNode);
                     }
-
+                    //If second Node isn´t already in the Nodelist of the Graph we can add it.
                     if (!hasRowNode2) {
 
                         g.NodeList.add(rowNode2);
                     }
 
-                    // Adding Neighbours
+                    // Adding Neighbours of the current rownodes.
                     for (int i = 0; i < g.NodeList.size(); i++) {
 
                         if (rowNode.NodeIndex == g.NodeList.get(i).NodeIndex) {
@@ -93,174 +113,58 @@ public class Parser {
                         }
 
                     }
-
+                    //Every Line is basically an Edge containg two Nodes. Depending of the length of the line the edge is unweighted or weighted.
                     Edge e = null;
-
+                    //unweighted Edge
                     if (rowData.length == 2) {
-
+                        //Init with null since we only need the ref
                         Node n1 = null;
                         Node n2 = null;
-
-                        for (Node n : g.NodeList) {
+                        //Finding reference of the Node Objects in the Nodelist of the graph.
+                        for (Node n: g.NodeList) {
 
                             if (n.NodeIndex == rowNode.NodeIndex) {
                                 n1 = n;
 
-                            }
-
-                            else if (n.NodeIndex == rowNode2.NodeIndex) {
+                            } else if (n.NodeIndex == rowNode2.NodeIndex) {
 
                                 n2 = n;
                             }
                         }
-
+                        //Creating a new Edge with the founded references of the Nodes.
                         if (n1 != null && n2 != null) {
                             e = new Edge(n1, n2);
                             n1.EdgeList.add(e);
                             n2.EdgeList.add(e);
                         }
-                        // e = new Edge(rowNode, rowNode2);
 
-                    }
-
+                    } 
+                    //TODO REVISTED LOGIC!!!. weighted Edge.
                     else if (rowData.length == 3) {
 
                         e = new Edge(rowNode, rowNode2, Float.parseFloat(rowData[1]));
-   
+
                     }
+                    //Adding Edge first to an Parsing Edge List.
                     g.ParsingEdgeList.add(e);
 
                 }
-
+                //Increment counter of line
                 lineCounter++;
             }
-            System.out.println("Anzahl Kanten:" + g.EdgeList.size());
-            System.out.println("Anzahl Knoten:" + g.NodeList.size());
-
-            /*
-             * for (Node n : g.NodeList) {
-             * 
-             * System.out.println("Node mit der ID: " + n.NodeIndex +
-             * "hat folgende Nachbarn:");
-             * 
-             * for (int i = 0; i < n.NeighbourList.size(); i++) {
-             * 
-             * System.out.println("Index des Nachbarn:" + n.NeighbourList.get(i).NodeIndex);
-             * }
-             * }
-             */
-
+            //System.out.println("Anzahl Kanten:" + g.EdgeList.size());
+            //System.out.println("Anzahl Knoten:" + g.NodeList.size());
+            //Sort Nodelist by Nodeindex ASC
             g.sortNodeList();
+            //MAYBE NOT needed if doing same as unweighted edge???
             g.extractRealEdges();
-            // g.fillAdjacentList();
-            // g.printIncidentMatrix();
-            // g.printAdjacentMatrix();
-
-            /*
-             * int graphNodeCount = 0;
-             * int lineCounter = 0;
-             * boolean isWeighted = false;
-             * boolean isDirected = false;
-             * while (myReader.hasNextLine()) {
-             * String data = myReader.nextLine();
-             * //First line represents the Total Node Count
-             * if(lineCounter == 0) {
-             * graphNodeCount = Integer.parseInt(data);
-             * }
-             * else {
-             * //Connection of Nodes. Seperation of Nodes done by Whitespace e.g 1 2
-             * String [] nodeArr = data.split("\\s+");
-             * 
-             * //Edges w/o weight
-             * if(nodeArr.length == 2) {
-             * Node rowNode = new Node(Integer.parseInt(nodeArr[0]));
-             * Node rowNode2 = new Node(Integer.parseInt(nodeArr[1]));
-             * rowNode.NeighbourList.add(rowNode2);
-             * g.EdgeList.add(new Edge(rowNode, rowNode2));
-             * 
-             * }
-             * //Edges with weight
-             * else if(nodeArr.length == 3) {
-             * //Setting Weight prop
-             * if(!isWeighted) {
-             * isWeighted = true;
-             * }
-             * Node rowNode = new Node(Integer.parseInt(nodeArr[0]));
-             * float weight = Float.parseFloat(nodeArr[1]);
-             * Node rowNode2 = new Node(Integer.parseInt(nodeArr[2]));
-             * g.EdgeList.add(new Edge(rowNode, rowNode2,weight));
-             * 
-             * rowNode.NeighbourList.add(rowNode2);
-             * 
-             * }
-             * 
-             * 
-             * }
-             * lineCounter++;
-             * 
-             * }
-             * myReader.close();
-             * 
-             * //Update Weight prop
-             * g.isWeighted = isWeighted;
-             * 
-             * for(Edge e : g.EdgeList) {
-             * 
-             * boolean hasANode = false;
-             * boolean hasBNode = false;
-             * for(Node n : g.NodeList) {
-             * 
-             * if(n.NodeIndex == e.a.NodeIndex) {
-             * hasANode = true;
-             * 
-             * 
-             * }
-             * 
-             * if(n.NodeIndex == e.b.NodeIndex) {
-             * 
-             * hasBNode = true;
-             * }
-             * 
-             * 
-             * }
-             * 
-             * if(!hasANode) {
-             * 
-             * g.NodeList.add(e.a);
-             * }
-             * 
-             * if(!hasBNode) {
-             * g.NodeList.add(e.b);
-             * }
-             * 
-             * 
-             * }
-             * 
-             * 
-             * System.out.println("Anzahl Kanten:"+g.EdgeList.size());
-             * System.out.println("Anzahl Knoten:"+g.NodeList.size());
-             * 
-             * 
-             * for(Node n: g.NodeList) {
-             * 
-             * System.out.println("Node mit der ID:"+n.NodeIndex+"hat folgende Nachbarn:");
-             * 
-             * 
-             * for(int i = 0; i < n.NeighbourList.size();i++) {
-             * 
-             * System.out.println("Index des NAchbarn:"+n.NeighbourList.get(i).NodeIndex);
-             * }
-             * }
-             * 
-             * 
-             */
 
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            System.out.println("Could not parse given Graph");
             e.printStackTrace();
         }
 
-        // Return true if parsing was succesfull
+        // Returns a graph if parsing passed successfully.
         return g;
     }
 
