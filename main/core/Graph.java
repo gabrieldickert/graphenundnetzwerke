@@ -28,7 +28,7 @@ public class Graph {
         this.isUndirected = isUndirected;
 
     }
-
+    /*LEGACY
     public void extractRealEdges() {
 
         for(Edge e : ParsingEdgeList) {
@@ -48,7 +48,7 @@ public class Graph {
 
         }
 
-    }
+    }*/
 
     public int getIndexOfNode(int NodeIndex) {
 

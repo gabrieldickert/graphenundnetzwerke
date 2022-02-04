@@ -139,14 +139,34 @@ public class Parser {
                         }
 
                     } 
-                    //TODO REVISTED LOGIC!!!. weighted Edge.
                     else if (rowData.length == 3) {
 
-                        e = new Edge(rowNode, rowNode2, Float.parseFloat(rowData[1]));
+                            //Init with null since we only need the ref
+                            Node n1 = null;
+                            Node n2 = null;
+                            //Finding reference of the Node Objects in the Nodelist of the graph.
+                            for (Node n: g.NodeList) {
+    
+                                if (n.NodeIndex == rowNode.NodeIndex) {
+                                    n1 = n;
+    
+                                } else if (n.NodeIndex == rowNode2.NodeIndex) {
+    
+                                    n2 = n;
+                                }
+                            }
+                            //Creating a new Edge with the founded references of the Nodes.
+                            if (n1 != null && n2 != null) {
+                                e = new Edge(n1, n2, Float.parseFloat(rowData[1]));
+                                n1.EdgeList.add(e);
+                                n2.EdgeList.add(e);
+                            }
+
+                      
 
                     }
                     //Adding Edge first to an Parsing Edge List.
-                    g.ParsingEdgeList.add(e);
+                    g.EdgeList.add(e);
 
                 }
                 //Increment counter of line
@@ -156,8 +176,7 @@ public class Parser {
             //System.out.println("Anzahl Knoten:" + g.NodeList.size());
             //Sort Nodelist by Nodeindex ASC
             g.sortNodeList();
-            //MAYBE NOT needed if doing same as unweighted edge???
-            g.extractRealEdges();
+
 
         } catch (FileNotFoundException e) {
             System.out.println("Could not parse given Graph");
