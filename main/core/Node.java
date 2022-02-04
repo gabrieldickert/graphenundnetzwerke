@@ -20,13 +20,13 @@ public class Node {
      */
     public LinkedList<Edge> EdgeList;
     // DFS props
-    boolean visited = false;
-    int discoverTime = 0;
-    int finishedTime = 0;
-    Node preNode = null;
+    public boolean visited = false;
+    public int discoverTime = 0;
+    public int finishedTime = 0;
+    public Node preNode = null;
     // Init Single-Source props
     public int d = 10000;
-    Node preNodeShortestPath = null;
+    public Node preNodeShortestPath = null;
 
     /**
      * Constructor for a Node.

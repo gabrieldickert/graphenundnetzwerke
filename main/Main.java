@@ -18,12 +18,16 @@ public class Main {
         Graph g = P.parseGraphFromInput("input/" + filename + ".txt");
 
         ArrayList<Node> dfsList = DFS.printDFS(g);
-        for (Node n : dfsList) {
-            System.out.print(n.NodeIndex + "\n");
+
+        for(int i = 0; i < dfsList.size();i++) {
+
+            Node n = dfsList.get(i);
+            System.out.println(n.NodeIndex+" (Discovertime:"+n.discoverTime+" / Finishtime:"+n.finishedTime+")");
         }
 
+
         GraphExporter.exportGraphToDOT(g, filename + ".dot");
-        
+
         System.out.println("\n------------BENCHMARK OVER TOPSORT------------");
     }
 

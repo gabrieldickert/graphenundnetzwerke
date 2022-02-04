@@ -62,7 +62,10 @@ public class Parser {
                     } 
                     //if the length of the current line is 3, the second Nodeindex is at index 2 of the splitted array.
                     else if (rowData.length == 3) {
-
+                        //Marking Graph as weighted
+                        if(!g.isWeighted) {
+                            g.isWeighted = true;
+                        }
                         rowNode = new Node(Integer.parseInt(rowData[0]));
                         rowNode2 = new Node(Integer.parseInt(rowData[2]));
                     }

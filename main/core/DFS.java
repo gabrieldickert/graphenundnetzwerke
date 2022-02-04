@@ -39,8 +39,8 @@ public class DFS {
             dfsNodes.add(nodeStack.pop());
             // System.out.println( nodeStack.pop().NodeIndex);
         }
-
-
+        //Reverse due nature of Stack
+        Collections.reverse(dfsNodes);
         return dfsNodes;
     }
     /**
@@ -55,10 +55,10 @@ public class DFS {
         DFS.totalTime++;
 
         n.discoverTime = DFS.totalTime;
-        // System.out.println("Discovertime von Knoten"+n.NodeIndex+" beträgt "+n.discoverTime);
+        //System.out.println("Discovertime von Knoten "+n.NodeIndex+" beträgt "+n.discoverTime);
 
         n.visited = true;
-        nodeStack.push(n);
+    
 
         ArrayList<Node> nNeighborList = n.NeighbourList;
 
@@ -72,7 +72,9 @@ public class DFS {
 
         DFS.totalTime++;
         n.finishedTime = DFS.totalTime;
-        // System.out.println("Finish von Knoten"+n.NodeIndex+" beträgt "+n.finishedTime);
+        nodeStack.push(n);
+        //System.out.println(n.NodeIndex+" (Discovertime:"+n.discoverTime+" / Finishtime:"+n.finishedTime+")");
+        //System.out.println("Finish von Knoten "+n.NodeIndex+" beträgt "+n.finishedTime);
 
     }
 }

@@ -28,6 +28,8 @@ public class Edge {
 
         this.a = a;
         this.b = b;
+     
+
 
     }
 
