@@ -44,8 +44,14 @@ public class Main {
         for (Edge e : tree) {
 
             System.out.println("" + e.a.NodeIndex + "--" + e.b.NodeIndex + " -> " + e.weight);
+    
         }
+
         GraphExporter.exportGraphToDOT(g, filename + ".dot");
+        //Setting tree as Edgelist for better output
+        g.EdgeList = new ArrayList<Edge>(tree);
+        
+        GraphExporter.exportGraphToDOT(g, filename + "_postkruskal.dot");
 
         System.out.println("\n------------BENCHMARK OVER KRUSKAL------------");
     }
@@ -59,7 +65,7 @@ public class Main {
 
          HashMap<Node, Integer> dijkstraResult = PathFinding.performDijkstra(g,g.NodeList.get(nodeIndex));
          for (Node n : dijkstraResult.keySet()) {
-         System.out.println(n.NodeIndex + " " + n.d);
+         System.out.println("Knoten: "+n.NodeIndex +" Distanz: "+ n.d+" vorheriger Knoten: "+(n.preNode == null ? "/" : n.preNode.NodeIndex));
          }
 
         GraphExporter.exportGraphToDOT(g, filename + ".dot");
@@ -70,15 +76,16 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.println(
-                "Bitte Algorithmus auswählen: 1.Topsort 2.Kruskal 3.Djikstra 4.Program beenden\nBitte Zahl eingeben");
+                "Bitte Algorithmus auswählen: 1.Topsort 2.Kruskal 3.Dijkstra 4.Program beenden\nBitte Zahl eingeben");
         Scanner in = new Scanner(System.in);
         while (in.hasNextLine()) {
             System.out.println("Bitte Zahl eingeben:");
             int input = in.nextInt();
             if (input == 4) {
+                System.out.println("Meddl off");
                 break;
             }
-            System.out.print("Name der Benchmark File eingeben (aus Input ordern ohne .txt Endung):\n");
+            System.out.print("Name der Benchmark File eingeben (aus Input Ordern ohne .txt Endung):\n");
             String benchmarkName = in.next();
             switch (input) {
                 case 1:
@@ -94,65 +101,6 @@ public class Main {
             }
 
         }
-
-        // Parser P = new Parser();
-
-        // Graph g = P.parseGraphFromInput("input/dijkstra.txt");
-
-        /*
-         * for (int i = 0; i < 1; i++) {
-         * 
-         * for (int j = 0; j < g.NodeList.get(i).EdgeList.size(); j++) {
-         * 
-         * System.out.println("Knoten " + g.NodeList.get(i).NodeIndex +
-         * " hat Kante von "
-         * + g.NodeList.get(i).EdgeList.get(j).a.NodeIndex + " zu "
-         * + g.NodeList.get(i).EdgeList.get(j).b.NodeIndex
-         * + " mit weight: " + g.NodeList.get(i).EdgeList.get(j).weight);
-         * }
-         * 
-         * }
-         */
-
-        /*
-         * GraphExporter.exportGraphToDOT(g, "test.dot");
-         * 
-         * HashMap<Node, Integer> dijkstraResult = PathFinding.performDijkstra(g,
-         * g.NodeList.get(0));
-         * 
-         * for (Node n : dijkstraResult.keySet()) {
-         * System.out.println(n.NodeIndex + " " + n.d);
-         * }
-         */
-
-        /*
-         * LinkedList<Edge> BAUM = Kruskal.performKruskal(g);
-         * 
-         * 
-         * for(Edge e : BAUM) {
-         * 
-         * System.out.println(""+e.a.NodeIndex+"--"+e.b.NodeIndex+" -> "+e.weight);
-         * }
-         */
-
-        // GraphExporter.exportGraphToDOT(g, "test.dot");
-
-        /*
-         * ArrayList<Node> dfsList = DFS.printDFS(g);
-         * System.out.print("TopSort: ");
-         * for (Node n : dfsList) {
-         * 
-         * System.out.print(n.NodeIndex + " ");
-         * }
-         */
-
-        // System.out.println(dfsList);
-        // g = P.parseGraphFromInput("input/k3_3.txt");
-        // g = P.parseGraphFromInput("input/petersen.txt");
-        /*
-         * g = P.parseGraphFromInput("input/spider.txt");
-         * g = P.parseGraphFromInput("input/primkruskal.txt");
-         */
 
     }
 

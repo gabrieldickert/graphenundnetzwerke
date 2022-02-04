@@ -28,7 +28,7 @@ public class GraphExporter {
         file.append(e.a.NodeIndex + " -> " + e.b.NodeIndex + "\n");
       }
       else {
-        file.append(e.a.NodeIndex + " -> " + e.b.NodeIndex + " [weight="+Math.round(e.weight)+"] \n");
+        file.append(e.a.NodeIndex + " -> " + e.b.NodeIndex + " [weight="+Math.round(e.weight)+ "] [label="+Math.round(e.weight)+"] \n");
       }
 
     }

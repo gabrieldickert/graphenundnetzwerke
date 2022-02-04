@@ -25,6 +25,7 @@ public class PathFinding {
         if (e.b.d > e.a.d + (int) e.weight) {
             e.b.d = e.a.d + (int) e.weight;
             e.b.preNodeShortestPath = e.a;
+            e.b.preNode = e.a;
         }
     }
 
