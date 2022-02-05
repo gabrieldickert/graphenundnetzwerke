@@ -40,6 +40,10 @@ public class Main {
 
         GraphExporter.exportGraphToDOT(g, filename + ".dot");
 
+        // Clear static dfs vals for multiple Usage
+        DFS.totalTime = 0;
+        DFS.dfsNodes = new ArrayList<>();
+
         System.out.println("\n------------BENCHMARK OVER TOPSORT------------");
     }
 
