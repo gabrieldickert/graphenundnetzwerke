@@ -5,13 +5,24 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+/**
+ * Class for PathFinding Algorithm.
+ */
 public class PathFinding {
 
+    /**
+     * Prepare Nodes for Pathfinding Algorithm (e.g Dijkstra)
+     * 
+     * @param g          Graph
+     * @param startPoint Node to start from.
+     */
     public static void initSingleSource(Graph g, Node startPoint) {
 
+        // Setting every distance for a Node to infinite aswell as setting prenode to
+        // null.
         for (Node n : g.NodeList) {
 
-            n.d = 10000; //"infinite"
+            n.d = 10000; // "infinite"
             n.preNodeShortestPath = null;
 
         }
@@ -20,6 +31,11 @@ public class PathFinding {
 
     }
 
+    /**
+     * Performs relax operation on given Edge.
+     * 
+     * @param e an weighted Edge.
+     */
     public static void relax(Edge e) {
 
         if (e.b.d > e.a.d + (int) e.weight) {
@@ -29,6 +45,13 @@ public class PathFinding {
         }
     }
 
+    /**
+     * Performs the Dijkstra Pathfinding Algorithm.
+     * 
+     * @param g Graph to perform Dijkstra onto.
+     * @param s Startnode.
+     * @return an Hashmap containing Nodes and the given Distance.
+     */
     public static HashMap<Node, Integer> performDijkstra(Graph g, Node s) {
 
         HashMap<Node, Boolean> visitedList = new HashMap<Node, Boolean>();
@@ -63,6 +86,12 @@ public class PathFinding {
         return returnMap;
     }
 
+    /**
+     * Extracts Node with lowest weight.
+     * 
+     * @param q Queue containg current Nodes
+     * @return Node with lowest weight.
+     */
     public static Node extractMin(Queue<Node> q) {
 
         Node polledNode = q.poll();

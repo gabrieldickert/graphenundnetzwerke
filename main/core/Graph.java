@@ -4,23 +4,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 
+/**
+ * Class for representing a simple graph.
+ */
 
 public class Graph {
-
+    // List containg all Edges of the Graph.
     public ArrayList<Edge> EdgeList;
-    public LinkedList<Edge> ParsingEdgeList;
+    // List containg all Nodes of the Graph.
     public ArrayList<Node> NodeList;
+    // Flag for Weighted Prop.
     public boolean isWeighted;
+    // Flag for directed Prop.
     public boolean isUndirected;
+    // 2D-Array containing the incident Matrix Representation.
     public int[][] incidentMat;
+    // 2D-Array containing the adjacent Matrix Representation.
     public int[][] adjacentMat;
+    // List Containg the AdjacentList of thsi Graph.
     public LinkedHashMap<Node, ArrayList<Node>> adjacentList;
 
+    /**
+     * Constructor for a simple Graph
+     * 
+     * @param isWeighted   set weighted property.
+     * @param isUndirected set undirected property.
+     */
     public Graph(boolean isWeighted, boolean isUndirected) {
 
-        ParsingEdgeList = new LinkedList<Edge>();
         EdgeList = new ArrayList<Edge>();
         NodeList = new ArrayList<Node>();
 
@@ -28,42 +40,29 @@ public class Graph {
         this.isUndirected = isUndirected;
 
     }
-    /*LEGACY
-    public void extractRealEdges() {
 
-        for(Edge e : ParsingEdgeList) {
-            int nodeIndexA = getIndexOfNode(e.a.NodeIndex);
-            int nodeIndexB = getIndexOfNode(e.b.NodeIndex);
-            if( nodeIndexA!=-1 && nodeIndexB!=-1) {
-
-                Node a  = NodeList.get(nodeIndexA);
-                Node b =  NodeList.get(nodeIndexB);
-                Edge realEdge = new Edge(a,b,e.weight);
-
-                a.EdgeList.add(realEdge);
-                b.EdgeList.add(realEdge);
-                EdgeList.add(e);
-
-            }
-
-        }
-
-    }*/
-
+    /**
+     * Returns the Index of a specific Node in the Nodelist of the Graph.
+     * 
+     * @param NodeIndex Nodeindex to find .
+     * @return Index of the coressponding Node in the Nodelist.
+     */
     public int getIndexOfNode(int NodeIndex) {
 
-        for(int i = 0; i < NodeList.size();i++) {
+        for (int i = 0; i < NodeList.size(); i++) {
 
-            if(NodeList.get(i).NodeIndex == NodeIndex) {
+            if (NodeList.get(i).NodeIndex == NodeIndex) {
                 return i;
             }
         }
 
         return -1;
-        
-    
+
     }
 
+    /**
+     * Prints the Incidient Matrix of the Graph.
+     */
     public void printIncidentMatrix() {
         // Init Size of IncidentMat
         incidentMat = new int[NodeList.size()][EdgeList.size()];
@@ -89,6 +88,9 @@ public class Graph {
 
     }
 
+    /**
+     * Prints Adjacent Matrix of the Graph.
+     */
     public void printAdjacentMatrix() {
 
         adjacentMat = new int[NodeList.size()][NodeList.size()];
@@ -118,6 +120,9 @@ public class Graph {
 
     }
 
+    /**
+     * Fills the AdjacentList
+     */
     public void fillAdjacentList() {
 
         adjacentList = new LinkedHashMap<>();
@@ -140,6 +145,11 @@ public class Graph {
         });
     }
 
+    /**
+     * Prints a 2D-Matrix
+     * 
+     * @param m M 2D-Array to print.
+     */
     public void printMatrix(int[][] m) {
         try {
             int rows = m.length;
@@ -158,15 +168,21 @@ public class Graph {
         }
     }
 
+    /**
+     * Sorts the Nodelist of the Graph by Nodeindex ASC.
+     */
     public void sortNodeList() {
-        // Aufsteigende Sortierung der NodeList nach nodeIndex
+
         Comparator<Node> compareById = (Node o1, Node o2) -> Integer.compare(o1.NodeIndex, o2.NodeIndex);
         Collections.sort(NodeList, compareById);
     }
 
+    /**
+     * Sorts the Edgelist of the Graph by Edgeweight ASC.
+     */
     public void sortEdgeList() {
 
-        Comparator<Edge> compareByWeight = (Edge e1, Edge e2) -> Float.compare(e1.weight,e2.weight);
+        Comparator<Edge> compareByWeight = (Edge e1, Edge e2) -> Float.compare(e1.weight, e2.weight);
         Collections.sort(EdgeList, compareByWeight);
     }
 

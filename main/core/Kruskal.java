@@ -6,7 +6,12 @@ import java.util.TreeSet;
 import java.util.HashMap;
 
 public class Kruskal {
-
+    /**
+     * Performs Kruskal Algorithm.
+     * 
+     * @param g Graph to perform Kruskal onto.
+     * @return List of Edges containing the lowest weights to reach every Node.
+     */
     public static LinkedList<Edge> performKruskal(Graph g) {
 
         LinkedList<Edge> kruskalList = new LinkedList<>();
@@ -44,6 +49,13 @@ public class Kruskal {
 
     }
 
+    /**
+     * Finds tree in forest.
+     * 
+     * @param forest the tree.
+     * @param n      Node which tree needs to contain.
+     * @return tree containing node.
+     */
     public static HashSet<Integer> findSet(HashMap<Integer, HashSet<Integer>> forest, Node n) {
 
         for (int representative : forest.keySet()) {
@@ -56,6 +68,12 @@ public class Kruskal {
         return null;
     }
 
+    /**
+     * Creates a tree ocntaing the Nodeindex as values.
+     * 
+     * @param n Node to Start from
+     * @return newly created Tree
+     */
     public static HashSet<Integer> makeSet(Node n) {
 
         HashSet<Integer> nodeSet = new HashSet<Integer>(1);
@@ -66,6 +84,13 @@ public class Kruskal {
 
     }
 
+    /**
+     * Unions two trees.
+     * 
+     * @param forest Forest containg all trees.
+     * @param n1     Node1 which tree1 needs to have included
+     * @param n2     Node2 which tree2 needs to have included
+     */
     public static void union(HashMap<Integer, HashSet<Integer>> forest, Node n1, Node n2) {
         HashSet<Integer> tree1 = findSet(forest, n1);
         HashSet<Integer> tree2 = findSet(forest, n2);

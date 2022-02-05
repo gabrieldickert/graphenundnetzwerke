@@ -50,30 +50,35 @@ public class Parser {
                 } else {
                     // Splitting Entry of line(row). Seperation of line done by Whitespace
                     String[] rowData = data.split("\\s+");
-                    //a line at index > 0 always contains atleast two nodes. Therefore two Nodes are init with null in advance.
+                    // a line at index > 0 always contains atleast two nodes. Therefore two Nodes
+                    // are init with null in advance.
                     Node rowNode = null;
                     Node rowNode2 = null;
-                    //a line can be "simply" an unweighted edge therefore the length of the line is only 2. 
+                    // a line can be "simply" an unweighted edge therefore the length of the line is
+                    // only 2.
                     if (rowData.length == 2) {
-                        //Parsing Nodeinicies from the line
+                        // Parsing Nodeinicies from the line
                         rowNode = new Node(Integer.parseInt(rowData[0]));
                         rowNode2 = new Node(Integer.parseInt(rowData[1]));
 
-                    } 
-                    //if the length of the current line is 3, the second Nodeindex is at index 2 of the splitted array.
+                    }
+                    // if the length of the current line is 3, the second Nodeindex is at index 2 of
+                    // the splitted array.
                     else if (rowData.length == 3) {
-                        //Marking Graph as weighted
-                        if(!g.isWeighted) {
+                        // Marking Graph as weighted
+                        if (!g.isWeighted) {
                             g.isWeighted = true;
                         }
                         rowNode = new Node(Integer.parseInt(rowData[0]));
                         rowNode2 = new Node(Integer.parseInt(rowData[2]));
                     }
-                    //Flags for checking if Node is already part of the Nodelist of the internal graph representation.(Ensures avoiding duplicates with different mem adresses!)
+                    // Flags for checking if Node is already part of the Nodelist of the internal
+                    // graph representation.(Ensures avoiding duplicates with different mem
+                    // adresses!)
                     boolean hasRowNode = false;
                     boolean hasRowNode2 = false;
 
-                    //Checking Nodelist of the Graph for current row Nodes.
+                    // Checking Nodelist of the Graph for current row Nodes.
                     for (int i = 0; i < g.NodeList.size(); i++) {
 
                         if (g.NodeList.get(i).NodeIndex == rowNode.NodeIndex) {
@@ -85,17 +90,17 @@ public class Parser {
 
                             hasRowNode2 = true;
                         }
-                        //Both rownodes have been found => Loop can be stopped here.
+                        // Both rownodes have been found => Loop can be stopped here.
                         if (hasRowNode && hasRowNode2) {
                             break;
                         }
 
                     }
-                    //If first Node isn´t already in the Nodelist of the Graph we can add it.
+                    // If first Node isn´t already in the Nodelist of the Graph we can add it.
                     if (!hasRowNode) {
                         g.NodeList.add(rowNode);
                     }
-                    //If second Node isn´t already in the Nodelist of the Graph we can add it.
+                    // If second Node isn´t already in the Nodelist of the Graph we can add it.
                     if (!hasRowNode2) {
 
                         g.NodeList.add(rowNode2);
@@ -116,15 +121,16 @@ public class Parser {
                         }
 
                     }
-                    //Every Line is basically an Edge containg two Nodes. Depending of the length of the line the edge is unweighted or weighted.
+                    // Every Line is basically an Edge containg two Nodes. Depending of the length
+                    // of the line the edge is unweighted or weighted.
                     Edge e = null;
-                    //unweighted Edge
+                    // unweighted Edge
                     if (rowData.length == 2) {
-                        //Init with null since we only need the ref
+                        // Init with null since we only need the ref
                         Node n1 = null;
                         Node n2 = null;
-                        //Finding reference of the Node Objects in the Nodelist of the graph.
-                        for (Node n: g.NodeList) {
+                        // Finding reference of the Node Objects in the Nodelist of the graph.
+                        for (Node n : g.NodeList) {
 
                             if (n.NodeIndex == rowNode.NodeIndex) {
                                 n1 = n;
@@ -134,52 +140,48 @@ public class Parser {
                                 n2 = n;
                             }
                         }
-                        //Creating a new Edge with the founded references of the Nodes.
+                        // Creating a new Edge with the founded references of the Nodes.
                         if (n1 != null && n2 != null) {
                             e = new Edge(n1, n2);
                             n1.EdgeList.add(e);
                             n2.EdgeList.add(e);
                         }
 
-                    } 
-                    else if (rowData.length == 3) {
+                    } else if (rowData.length == 3) {
 
-                            //Init with null since we only need the ref
-                            Node n1 = null;
-                            Node n2 = null;
-                            //Finding reference of the Node Objects in the Nodelist of the graph.
-                            for (Node n: g.NodeList) {
-    
-                                if (n.NodeIndex == rowNode.NodeIndex) {
-                                    n1 = n;
-    
-                                } else if (n.NodeIndex == rowNode2.NodeIndex) {
-    
-                                    n2 = n;
-                                }
-                            }
-                            //Creating a new Edge with the founded references of the Nodes.
-                            if (n1 != null && n2 != null) {
-                                e = new Edge(n1, n2, Float.parseFloat(rowData[1]));
-                                n1.EdgeList.add(e);
-                                n2.EdgeList.add(e);
-                            }
+                        // Init with null since we only need the ref
+                        Node n1 = null;
+                        Node n2 = null;
+                        // Finding reference of the Node Objects in the Nodelist of the graph.
+                        for (Node n : g.NodeList) {
 
-                      
+                            if (n.NodeIndex == rowNode.NodeIndex) {
+                                n1 = n;
+
+                            } else if (n.NodeIndex == rowNode2.NodeIndex) {
+
+                                n2 = n;
+                            }
+                        }
+                        // Creating a new Edge with the founded references of the Nodes.
+                        if (n1 != null && n2 != null) {
+                            e = new Edge(n1, n2, Float.parseFloat(rowData[1]));
+                            n1.EdgeList.add(e);
+                            n2.EdgeList.add(e);
+                        }
 
                     }
-                    //Adding Edge first to an Parsing Edge List.
+                    // Adding Edge first to an Parsing Edge List.
                     g.EdgeList.add(e);
 
                 }
-                //Increment counter of line
+                // Increment counter of line
                 lineCounter++;
             }
-            //System.out.println("Anzahl Kanten:" + g.EdgeList.size());
-            //System.out.println("Anzahl Knoten:" + g.NodeList.size());
-            //Sort Nodelist by Nodeindex ASC
+            // System.out.println("Anzahl Kanten:" + g.EdgeList.size());
+            // System.out.println("Anzahl Knoten:" + g.NodeList.size());
+            // Sort Nodelist by Nodeindex ASC
             g.sortNodeList();
-
 
         } catch (FileNotFoundException e) {
             System.out.println("Could not parse given Graph");

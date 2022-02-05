@@ -7,8 +7,20 @@ import java.util.Scanner;
 
 import main.core.*;
 
+/**
+ * Simple Program for the Course "Graphen und Netzwerke" Wintersemester
+ * 2021/2022 made by Gabriel Dickert, Julian Schuster and Steven Hufnagel.
+ * This Program performs Topsort, Kruskal and Dijkstra Algorithm based on the
+ * benchmark Graphs provided by Jörg Kreiker.
+ * To use this Program, follow the Instructions on the Commandline.
+ */
 public class Main {
 
+    /**
+     * Performs the Topsort Algorithm.
+     * 
+     * @param filename File containing the Graph to perform Topsport onto.
+     */
     public static void performTopsort(String filename) {
 
         System.out.println("------------BEGIN BENCHMARK FOR TOPSORT------------");
@@ -19,18 +31,23 @@ public class Main {
 
         ArrayList<Node> dfsList = DFS.printDFS(g);
 
-        for(int i = 0; i < dfsList.size();i++) {
+        for (int i = 0; i < dfsList.size(); i++) {
 
             Node n = dfsList.get(i);
-            System.out.println(n.NodeIndex+" (Discovertime:"+n.discoverTime+" / Finishtime:"+n.finishedTime+")");
+            System.out.println(
+                    n.NodeIndex + " (Discovertime:" + n.discoverTime + " / Finishtime:" + n.finishedTime + ")");
         }
-
 
         GraphExporter.exportGraphToDOT(g, filename + ".dot");
 
         System.out.println("\n------------BENCHMARK OVER TOPSORT------------");
     }
 
+    /**
+     * Performs the Kruskal Algorithm.
+     * 
+     * @param filename File containing the Graph to perform Kruskal onto.
+     */
     public static void performKruskal(String filename) {
 
         System.out.println("------------BEGIN BENCHMARK FOR KRUSKAL------------");
@@ -44,29 +61,36 @@ public class Main {
         for (Edge e : tree) {
 
             System.out.println("" + e.a.NodeIndex + "--" + e.b.NodeIndex + " -> " + e.weight);
-    
+
         }
 
         GraphExporter.exportGraphToDOT(g, filename + ".dot");
-        //Setting tree as Edgelist for better output
+        // Setting tree as Edgelist for better output
         g.EdgeList = new ArrayList<Edge>(tree);
-        
+
         GraphExporter.exportGraphToDOT(g, filename + "_postkruskal.dot");
 
         System.out.println("\n------------BENCHMARK OVER KRUSKAL------------");
     }
 
-    public static void performDijkstra(String filename,int nodeIndex) {
+    /**
+     * Performs the Dijkstra Algorithm.
+     * 
+     * @param filename  File containing the Graph to perform Dijkstra onto.
+     * @param nodeIndex Node to start from (0 per Default but can be changed).
+     */
+    public static void performDijkstra(String filename, int nodeIndex) {
         System.out.println("------------BEGIN BENCHMARK FOR DIJKSTRA------------");
 
         Parser P = new Parser();
 
         Graph g = P.parseGraphFromInput("input/" + filename + ".txt");
 
-         HashMap<Node, Integer> dijkstraResult = PathFinding.performDijkstra(g,g.NodeList.get(nodeIndex));
-         for (Node n : dijkstraResult.keySet()) {
-         System.out.println("Knoten: "+n.NodeIndex +" Distanz: "+ n.d+" vorheriger Knoten: "+(n.preNode == null ? "/" : n.preNode.NodeIndex));
-         }
+        HashMap<Node, Integer> dijkstraResult = PathFinding.performDijkstra(g, g.NodeList.get(nodeIndex));
+        for (Node n : dijkstraResult.keySet()) {
+            System.out.println("Node: " + n.NodeIndex + " Distance: " + n.d + " previous Node: "
+                    + (n.preNode == null ? "/" : n.preNode.NodeIndex));
+        }
 
         GraphExporter.exportGraphToDOT(g, filename + ".dot");
 
@@ -76,16 +100,16 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.println(
-                "Bitte Algorithmus auswählen: 1.Topsort 2.Kruskal 3.Dijkstra 4.Program beenden\nBitte Zahl eingeben");
+                "Select Algorithm: 1.Topsort 2.Kruskal 3.Dijkstra 4.Exit Program \nPlease enter a number from 1-4");
         Scanner in = new Scanner(System.in);
         while (in.hasNextLine()) {
-            System.out.println("Bitte Zahl eingeben:");
+            System.out.println("Please enter a number from 1-4:");
             int input = in.nextInt();
             if (input == 4) {
-                System.out.println("Meddl off");
+                System.out.println("Bye");
                 break;
             }
-            System.out.print("Name der Benchmark File eingeben (aus Input Ordern ohne .txt Endung):\n");
+            System.out.print("Name of the Benchmark File (from the input directory without .txt ending):\n");
             String benchmarkName = in.next();
             switch (input) {
                 case 1:
@@ -94,8 +118,8 @@ public class Main {
                 case 2:
                     performKruskal(benchmarkName);
                     break;
-                  case 3:
-                    performDijkstra(benchmarkName,0);
+                case 3:
+                    performDijkstra(benchmarkName, 0);
                     break;
 
             }

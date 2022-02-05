@@ -13,7 +13,8 @@ public class GraphExporter {
 
   /**
    * Exports an Graph to a Dot File.
-   * @param g Graph to export.
+   * 
+   * @param g        Graph to export.
    * @param fileName name of the exported dotfile.
    */
   public static void exportGraphToDOT(Graph g, String fileName) {
@@ -24,11 +25,11 @@ public class GraphExporter {
     file.append("digraph g {\n");
 
     for (Edge e : g.EdgeList) {
-      if(!g.isWeighted) {
+      if (!g.isWeighted) {
         file.append(e.a.NodeIndex + " -> " + e.b.NodeIndex + "\n");
-      }
-      else {
-        file.append(e.a.NodeIndex + " -> " + e.b.NodeIndex + " [weight="+Math.round(e.weight)+ "] [label="+Math.round(e.weight)+"] \n");
+      } else {
+        file.append(e.a.NodeIndex + " -> " + e.b.NodeIndex + " [weight=" + Math.round(e.weight) + "] [label="
+            + Math.round(e.weight) + "] \n");
       }
 
     }
@@ -36,12 +37,12 @@ public class GraphExporter {
     file.append("}\n");
 
     try {
-      //Writing  dot file.
+      // Writing dot file.
       File dotFile = new File(outputDir + "//" + fileName);
       FileWriter myWriter = new FileWriter(dotFile);
       myWriter.write(file.toString());
       myWriter.close();
-      //Exec dot programm to generate graph as an image.
+      // Exec dot programm to generate graph as an image.
       convertDotToImage(dotFile.getAbsolutePath());
     } catch (IOException e) {
 
@@ -49,16 +50,18 @@ public class GraphExporter {
     }
 
   }
+
   /**
    * Converts a Dotfile to an Image (SVG).
+   * 
    * @param filePath Path to the dotfile.
    */
   public static void convertDotToImage(String filePath) {
-    //Creating shell command
+    // Creating shell command
     String cmd = "cmd /c dot -Tsvg " + filePath + " > " + filePath.substring(0, filePath.length() - 4) + ".svg";
 
     try {
-      //execute shell command
+      // execute shell command
       Runtime.getRuntime().exec(cmd);
     } catch (Exception e) {
       e.printStackTrace();
