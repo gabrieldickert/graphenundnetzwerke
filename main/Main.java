@@ -28,7 +28,9 @@ public class Main {
 
         Parser P = new Parser();
 
-        Graph g = P.parseGraphFromInput("input/" + filename + ".txt", false);
+        Graph g = P.parseGraphFromInput("input/" + filename + ".txt", true);
+
+        g.isUndirected = false;
 
         ArrayList<Node> dfsList = DFS.printDFS(g);
 
@@ -61,6 +63,8 @@ public class Main {
 
         Graph g = P.parseGraphFromInput("input/" + filename + ".txt", false);
 
+        g.isUndirected = true;
+
         LinkedList<Edge> tree = Kruskal.performKruskal(g);
 
         for (Edge e : tree) {
@@ -69,7 +73,6 @@ public class Main {
 
         }
 
-        g.isUndirected = true;
         GraphExporter.exportGraphToDOT(g, filename + ".dot");
         // Setting tree as Edgelist for better output
         g.EdgeList = new ArrayList<Edge>(tree);
@@ -90,9 +93,9 @@ public class Main {
 
         Parser P = new Parser();
         // false heißt ungerichtet
-        Graph g = P.parseGraphFromInput("input/" + filename + ".txt", false);
+        Graph g = P.parseGraphFromInput("input/" + filename + ".txt", true);
         // true heißt ungerichtet
-        g.isUndirected = true;
+        g.isUndirected = false;
 
         LinkedList<Node> outputList = new LinkedList<>();
         HashMap<Node, Integer> dijkstraResult = PathFinding.performDijkstra(g, g.NodeList.get(nodeIndex));
@@ -136,7 +139,7 @@ public class Main {
                     performKruskal(benchmarkName);
                     break;
                 case 3:
-                    performDijkstra(benchmarkName, 4);
+                    performDijkstra(benchmarkName, 0);
                     break;
 
             }
