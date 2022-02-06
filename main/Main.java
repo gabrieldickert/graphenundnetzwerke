@@ -92,8 +92,9 @@ public class Main {
 
         HashMap<Node, Integer> dijkstraResult = PathFinding.performDijkstra(g, g.NodeList.get(nodeIndex));
         for (Node n : dijkstraResult.keySet()) {
-            System.out.println("Node: " + n.NodeIndex + " Distance: " + n.d + " previous Node: "
-                    + (n.preNode == null ? "/" : n.preNode.NodeIndex));
+                System.out.println("Node: " + n.NodeIndex + " Distance: " + n.d + " previous Node: "
+                + (n.preNode == null ? "/" : n.preNode.NodeIndex));
+
         }
 
         GraphExporter.exportGraphToDOT(g, filename + ".dot");
