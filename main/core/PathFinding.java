@@ -67,14 +67,14 @@ public class PathFinding {
      */
     public static HashMap<Node, Integer> performDijkstra(Graph g, Node s) {
 
-        if (!g.isUndirected) {
+        // if (!g.isUndirected) {
 
-            for (Node n : g.NodeList) {
+        // for (Node n : g.NodeList) {
 
-                n.EdgeList.removeIf(e -> e.b.equals(n));
+        // n.EdgeList.removeIf(e -> e.b.equals(n));
 
-            }
-        }
+        // }
+        // }
 
         HashMap<Node, Integer> returnMap = new HashMap<Node, Integer>();
 
@@ -142,7 +142,7 @@ public class PathFinding {
             // relax(u, e);
             // }
 
-            u.EdgeList.removeIf(e -> e.a.equals(u));
+            // u.EdgeList.removeIf(e -> e.a.equals(u));
 
             /*
              * System.out.println("--------NACH RELAX------------");
