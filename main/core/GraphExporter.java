@@ -21,20 +21,37 @@ public class GraphExporter {
 
     StringBuilder file = new StringBuilder();
 
-    // First row gets graph row
-    file.append("digraph g {\n");
+    if (!g.isUndirected) {
+      // First row gets graph row
+      file.append("digraph g {\n");
 
-    for (Edge e : g.EdgeList) {
-      if (!g.isWeighted) {
-        file.append(e.a.NodeIndex + " -> " + e.b.NodeIndex + "\n");
-      } else {
-        file.append(e.a.NodeIndex + " -> " + e.b.NodeIndex + " [weight=" + Math.round(e.weight) + "] [label="
-            + Math.round(e.weight) + "] \n");
+      for (Edge e : g.EdgeList) {
+        if (!g.isWeighted) {
+          file.append(e.a.NodeIndex + " -> " + e.b.NodeIndex + "\n");
+        } else {
+          file.append(e.a.NodeIndex + " -> " + e.b.NodeIndex + " [weight=" + Math.round(e.weight) + "] [label="
+              + Math.round(e.weight) + "] \n");
+        }
+
       }
+      // Last row closing graph
+      file.append("}\n");
+    } else {
+      // First row gets graph row
+      file.append("graph g {\n");
 
+      for (Edge e : g.EdgeList) {
+        if (!g.isWeighted) {
+          file.append(e.a.NodeIndex + " -- " + e.b.NodeIndex + "\n");
+        } else {
+          file.append(e.a.NodeIndex + " -- " + e.b.NodeIndex + " [weight=" + Math.round(e.weight) + "] [label="
+              + Math.round(e.weight) + "] \n");
+        }
+
+      }
+      // Last row closing graph
+      file.append("}\n");
     }
-    // Last row closing graph
-    file.append("}\n");
 
     try {
       // Writing dot file.

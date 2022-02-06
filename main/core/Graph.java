@@ -132,17 +132,6 @@ public class Graph {
             adjacentList.put(n, n.NeighbourList);
         }
 
-        adjacentList.entrySet().forEach(entry -> {
-
-            // System.out.println("DER Nodeindex" + entry.getKey().NodeIndex);
-
-            for (int i = 0; i < entry.getValue().size(); i++) {
-
-                Node lol = (Node) entry.getValue().get(i);
-                // System.out.println("ENTHÄHLT KNOTEN" + lol.NodeIndex);
-
-            }
-        });
     }
 
     /**

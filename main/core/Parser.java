@@ -24,7 +24,7 @@ public class Parser {
      * @return an instantiated graph containg the informations about the given
      *         graphfile.
      */
-    public Graph parseGraphFromInput(String inputFile) {
+    public Graph parseGraphFromInput(String inputFile, boolean isDirected) {
 
         // We dont know if graph is weighted or directed in advance, we have to tailor
         // it to our usecase
@@ -118,6 +118,19 @@ public class Parser {
                                 }
                             }
 
+                        }
+
+                        if (!isDirected) {
+                            if (rowNode2.NodeIndex == g.NodeList.get(i).NodeIndex) {
+                                // Vorrausgesetzt keine parallelkante und selbstkante
+                                for (int j = 0; j < g.NodeList.size(); j++) {
+                                    if (g.NodeList.get(j).NodeIndex == rowNode.NodeIndex) {
+                                        g.NodeList.get(i).NeighbourList.add(g.NodeList.get(j));
+                                        break;
+                                    }
+                                }
+
+                            }
                         }
 
                     }

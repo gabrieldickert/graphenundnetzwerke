@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -27,7 +28,7 @@ public class Main {
 
         Parser P = new Parser();
 
-        Graph g = P.parseGraphFromInput("input/" + filename + ".txt");
+        Graph g = P.parseGraphFromInput("input/" + filename + ".txt", false);
 
         ArrayList<Node> dfsList = DFS.printDFS(g);
 
@@ -58,7 +59,7 @@ public class Main {
 
         Parser P = new Parser();
 
-        Graph g = P.parseGraphFromInput("input/" + filename + ".txt");
+        Graph g = P.parseGraphFromInput("input/" + filename + ".txt", false);
 
         LinkedList<Edge> tree = Kruskal.performKruskal(g);
 
@@ -68,6 +69,7 @@ public class Main {
 
         }
 
+        g.isUndirected = true;
         GraphExporter.exportGraphToDOT(g, filename + ".dot");
         // Setting tree as Edgelist for better output
         g.EdgeList = new ArrayList<Edge>(tree);
@@ -87,14 +89,24 @@ public class Main {
         System.out.println("------------BEGIN BENCHMARK FOR DIJKSTRA------------");
 
         Parser P = new Parser();
+        // false heißt ungerichtet
+        Graph g = P.parseGraphFromInput("input/" + filename + ".txt", false);
+        // true heißt ungerichtet
+        g.isUndirected = true;
 
-        Graph g = P.parseGraphFromInput("input/" + filename + ".txt");
-
+        LinkedList<Node> outputList = new LinkedList<>();
         HashMap<Node, Integer> dijkstraResult = PathFinding.performDijkstra(g, g.NodeList.get(nodeIndex));
         for (Node n : dijkstraResult.keySet()) {
-                System.out.println("Node: " + n.NodeIndex + " Distance: " + n.d + " previous Node: "
-                + (n.preNode == null ? "/" : n.preNode.NodeIndex));
+            outputList.add(n);
+        }
 
+        Comparator<Node> comp = (Node n1, Node n2) -> Integer.compare(n1.NodeIndex, n2.NodeIndex);
+
+        outputList.sort(comp);
+
+        for (Node n : outputList) {
+            System.out.println("Node: " + n.NodeIndex + " Distance: " + n.d + " previousNode: "
+                    + (n.preNode == null ? "/" : n.preNode.NodeIndex));
         }
 
         GraphExporter.exportGraphToDOT(g, filename + ".dot");
@@ -124,7 +136,7 @@ public class Main {
                     performKruskal(benchmarkName);
                     break;
                 case 3:
-                    performDijkstra(benchmarkName, 0);
+                    performDijkstra(benchmarkName, 4);
                     break;
 
             }

@@ -25,7 +25,6 @@ public class PathFinding {
 
             n.d = 10000; // "infinite"
             n.preNodeShortestPath = null;
-
         }
         // Startpoint gets distance 0
         startPoint.d = 0;
@@ -37,13 +36,25 @@ public class PathFinding {
      * 
      * @param e an weighted Edge.
      */
-    public static void relax(Edge e) {
-       // System.out.println("KANTE VON "+e.a.NodeIndex+" zu "+e.b.NodeIndex);
-        if (e.b.d > e.a.d + (int) e.weight) {
-            e.b.d = e.a.d + (int) e.weight;
-            e.b.preNodeShortestPath = e.a;
-            e.b.preNode = e.a;
-          //  System.out.println("DISTANZ ANPASSEN von "+e.b.NodeIndex);
+    public static void relax(Node u, Node v, Edge w) {
+        // System.out.println(
+        // "Ist die Distanz von " + e.b.NodeIndex + ": " + e.b.d + " größer als die
+        // Distanz von " + e.a.NodeIndex
+        // + ": " + e.a.d
+        // + " plus gewicht " + (int) e.weight + "?");
+        // if (e.b.d > e.a.d + (int) e.weight) {
+        // e.b.d = e.a.d + (int) e.weight;
+        // e.b.preNodeShortestPath = e.a;
+        // e.b.preNode = e.a;
+        // System.out.println("Ja, also neue distanz von " + e.b.NodeIndex + ": " +
+        // e.b.d);
+        // }
+
+        if (v.d > u.d + (int) w.weight) {
+            v.d = u.d + (int) w.weight;
+            v.preNode = u;
+            System.out.println("Ja, also neue distanz von " + v.NodeIndex + ": " +
+                    v.d);
         }
     }
 
@@ -55,14 +66,15 @@ public class PathFinding {
      * @return an Hashmap containing Nodes and the given Distance.
      */
     public static HashMap<Node, Integer> performDijkstra(Graph g, Node s) {
-         
-        for(Node n: g.NodeList) {
 
-           n.EdgeList.removeIf(e-> e.b.equals(n));
+        if (!g.isUndirected) {
 
+            for (Node n : g.NodeList) {
+
+                n.EdgeList.removeIf(e -> e.b.equals(n));
+
+            }
         }
-
-        HashMap<Node, Boolean> visitedList = new HashMap<Node, Boolean>();
 
         HashMap<Node, Integer> returnMap = new HashMap<Node, Integer>();
 
@@ -70,65 +82,94 @@ public class PathFinding {
 
         Comparator<Node> comp = (Node n1, Node n2) -> Integer.compare(n1.d, n2.d);
 
-        PriorityQueue<Node> waitqueue = new PriorityQueue<Node>(g.NodeList.size(),comp);
+        PriorityQueue<Node> waitqueue = new PriorityQueue<Node>(g.NodeList.size(), comp);
 
         for (Node node : g.NodeList) {
 
             waitqueue.add(node);
         }
 
-       /* for(Node node : waitqueue) {
+        /*
+         * for(Node node : waitqueue) {
+         * 
+         * System.out.println("QUEUE REIHENFOLGE INIT:"+node.NodeIndex);
+         * }
+         */
 
-            System.out.println("QUEUE REIHENFOLGE INIT:"+node.NodeIndex);
-        }*/
-        
         while (!waitqueue.isEmpty()) {
 
-            Node u = extractMin(waitqueue,g);
+            Node u = extractMin(waitqueue, g);
 
-           // System.out.println("Arbeite auf Knoten "+u.NodeIndex);
+            // Comparator<Edge> comp2 = (Edge e1, Edge e2) -> Float.compare(e1.weight,
+            // e2.weight);
 
-            LinkedList<Edge> edgeList = u.EdgeList;
+            // LinkedList<Edge> edgeList = u.EdgeList;
+            // u.EdgeList.sort(comp2);
 
-            //System.out.println("Länge Kantenliste von Knoten"+u.NodeIndex+":"+edgeList.size());
-     
-            for (Edge e : edgeList) {
+            // Edge w = u.EdgeList.getFirst();
 
-                relax(e);
-            }
+            // for (Edge e : g.EdgeList) {
+            // System.out.println("Node a: " + e.a.NodeIndex + " und Node b: " +
+            // e.b.NodeIndex);
 
-            edgeList.removeIf(e -> e.a.equals(u));
+            // }
 
-      /*      System.out.println("--------NACH RELAX------------");
-        for(Node n: waitqueue) {
+            for (Node v : u.NeighbourList) {
+                // System.out.println("Node " + u.NodeIndex + " ist adjacent zu " +
+                // node.NodeIndex);
 
-            System.out.println("NODE:"+n.NodeIndex+" mit DISTANZ"+n.d);
-        }
+                for (Edge edge : u.EdgeList) {
+                    if ((edge.a.NodeIndex == u.NodeIndex && edge.b.NodeIndex == v.NodeIndex)
+                            || (edge.a.NodeIndex == v.NodeIndex && edge.b.NodeIndex == u.NodeIndex)) {
+                        System.out
+                                .println("Node " + u.NodeIndex + " mit Adjacentnode v " + v.NodeIndex
+                                        + " und Edge w mit Gewicht " + edge.weight
+                                        + " geht in Relax");
 
-       // System.out.print("---------NEUE QUEUE---------");*/
-
-        if(waitqueue.size() > 0) {
-            PriorityQueue<Node> newWaitQueue = new PriorityQueue<Node>(waitqueue.size(),comp);
-
-            g.NodeList.sort(comp); 
-            for (Node node : g.NodeList) {
-    
-                if(waitqueue.contains(node)) {  
-                    newWaitQueue.add(node);
+                        relax(u, v, edge);
+                    }
                 }
-            
+
             }
-    
+
+            // System.out.println("Arbeite auf Knoten " + u.NodeIndex);
+
+            // System.out.println("Länge Kantenliste von Knoten" + u.NodeIndex + ":" +
+            // edgeList.size());
+
+            // for (Edge e : edgeList) {
+
+            // relax(u, e);
+            // }
+
+            u.EdgeList.removeIf(e -> e.a.equals(u));
+
+            /*
+             * System.out.println("--------NACH RELAX------------");
+             * for(Node n: waitqueue) {
+             * 
+             * System.out.println("NODE:"+n.NodeIndex+" mit DISTANZ"+n.d);
+             * }
+             * 
+             * // System.out.print("---------NEUE QUEUE---------");
+             */
+
+            if (waitqueue.size() > 0) {
+                PriorityQueue<Node> newWaitQueue = new PriorityQueue<Node>(waitqueue.size(), comp);
+
+                g.NodeList.sort(comp);
+                for (Node node : g.NodeList) {
+
+                    if (waitqueue.contains(node)) {
+                        newWaitQueue.add(node);
+                    }
+
+                }
+
                 waitqueue = newWaitQueue;
-        }
-   
-        
-
-
-     
+            }
 
             returnMap.put(u, u.d);
-
 
         }
 
@@ -141,42 +182,46 @@ public class PathFinding {
      * @param q Queue containg current Nodes
      * @return Node with lowest weight.
      */
-    public static Node extractMin(Queue<Node> q,Graph g) {
+    public static Node extractMin(Queue<Node> q, Graph g) {
 
-       // System.out.println("--------VOR POLL------------");
-       /* for(Node n: q) {
-
-            System.out.println("NODE:"+n.NodeIndex+" mit DISTANZ"+n.d);
-        }*/
+        // System.out.println("--------VOR POLL------------");
+        /*
+         * for(Node n: q) {
+         * 
+         * System.out.println("NODE:"+n.NodeIndex+" mit DISTANZ"+n.d);
+         * }
+         */
 
         Node polledNode = q.poll();
-      /*  System.out.println("--------NACH POLL------------");
-        for(Node n: q) {
-
-            System.out.println("NODE:"+n.NodeIndex+" mit DISTANZ"+n.d);
-        }*/
+        /*
+         * System.out.println("--------NACH POLL------------");
+         * for(Node n: q) {
+         * 
+         * System.out.println("NODE:"+n.NodeIndex+" mit DISTANZ"+n.d);
+         * }
+         */
 
         /*
-        if(q.size() > 0) {
-            Comparator<Node> comp = (Node n1, Node n2) -> Integer.compare(n1.d, n2.d);
-            PriorityQueue<Node> newWaitQueue = new PriorityQueue<Node>(q.size(),comp);
+         * if(q.size() > 0) {
+         * Comparator<Node> comp = (Node n1, Node n2) -> Integer.compare(n1.d, n2.d);
+         * PriorityQueue<Node> newWaitQueue = new PriorityQueue<Node>(q.size(),comp);
+         * 
+         * for (Node node : g.NodeList) {
+         * 
+         * if(q.contains(node)) {
+         * 
+         * System.out.println("QUEUE hat NODE "+node.NodeIndex);
+         * 
+         * newWaitQueue.add(node);
+         * }
+         * 
+         * }
+         * 
+         * q = newWaitQueue;
+         * }
+         */
 
-            for (Node node : g.NodeList) {
-
-                if(q.contains(node)) {
-
-                    System.out.println("QUEUE hat NODE "+node.NodeIndex);
-                
-                    newWaitQueue.add(node);
-                }
-            
-            }
-
-            q = newWaitQueue;
-        }*/
-   
-
-        System.out.println("Node wurde von Queue entfernt:"+polledNode.NodeIndex);
+        // System.out.println("Node wurde von Queue entfernt:"+polledNode.NodeIndex);
 
         return polledNode;
 
