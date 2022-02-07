@@ -191,10 +191,11 @@ public class Parser {
                 // Increment counter of line
                 lineCounter++;
             }
-            // System.out.println("Anzahl Kanten:" + g.EdgeList.size());
-            // System.out.println("Anzahl Knoten:" + g.NodeList.size());
+
             // Sort Nodelist by Nodeindex ASC
             g.sortNodeList();
+            // Closing
+            graphFileReader.close();
 
         } catch (FileNotFoundException e) {
             System.out.println("Could not parse given Graph");

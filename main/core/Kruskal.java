@@ -2,7 +2,6 @@ package main.core;
 
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.TreeSet;
 import java.util.HashMap;
 
 public class Kruskal {
@@ -33,8 +32,6 @@ public class Kruskal {
 
             weightSet.add(e.weight);
         }
-        // Sorted Weights in Set
-        TreeSet<Float> weightTreeSet = new TreeSet<Float>(weightSet);
 
         for (Edge e : g.EdgeList) {
 

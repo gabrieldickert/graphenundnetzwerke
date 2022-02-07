@@ -12,7 +12,7 @@ import main.core.*;
  * Simple Program for the Course "Graphen und Netzwerke" Wintersemester
  * 2021/2022 made by Gabriel Dickert, Julian Schuster and Steven Hufnagel.
  * This Program performs Topsort, Kruskal and Dijkstra Algorithm based on the
- * benchmark Graphs provided by Jörg Kreiker.
+ * benchmark Graphs provided by Prof.Dr. Jörg Kreiker.
  * To use this Program, follow the Instructions on the Commandline.
  */
 public class Main {
@@ -22,13 +22,13 @@ public class Main {
      * 
      * @param filename File containing the Graph to perform Topsport onto.
      */
-    public static void performTopsort(String filename,boolean isDirected) {
+    public static void performTopsort(String filename, boolean isDirected) {
 
         System.out.println("------------BEGIN BENCHMARK FOR TOPSORT------------");
 
         Parser P = new Parser();
 
-        Graph g = P.parseGraphFromInput("input/" + filename + ".txt",isDirected);
+        Graph g = P.parseGraphFromInput("input/" + filename + ".txt", isDirected);
 
         g.isUndirected = !isDirected;
 
@@ -55,7 +55,7 @@ public class Main {
      * 
      * @param filename File containing the Graph to perform Kruskal onto.
      */
-    public static void performKruskal(String filename,boolean isDirected) {
+    public static void performKruskal(String filename, boolean isDirected) {
 
         System.out.println("------------BEGIN BENCHMARK FOR KRUSKAL------------");
 
@@ -63,7 +63,7 @@ public class Main {
 
         Graph g = P.parseGraphFromInput("input/" + filename + ".txt", isDirected);
 
-        g.isUndirected =!isDirected;
+        g.isUndirected = !isDirected;
 
         LinkedList<Edge> tree = Kruskal.performKruskal(g);
 
@@ -88,13 +88,11 @@ public class Main {
      * @param filename  File containing the Graph to perform Dijkstra onto.
      * @param nodeIndex Node to start from (0 per Default but can be changed).
      */
-    public static void performDijkstra(String filename, int nodeIndex,boolean isDirected) {
+    public static void performDijkstra(String filename, int nodeIndex, boolean isDirected) {
         System.out.println("------------BEGIN BENCHMARK FOR DIJKSTRA------------");
 
         Parser P = new Parser();
-        // false heißt ungerichtet
         Graph g = P.parseGraphFromInput("input/" + filename + ".txt", isDirected);
-        // true heißt ungerichtet
         g.isUndirected = !isDirected;
 
         LinkedList<Node> outputList = new LinkedList<>();
@@ -129,27 +127,28 @@ public class Main {
                 System.out.println("Bye");
                 break;
             }
-            System.out.println("is the Graph directed?\n type 1 for yes, 2 for no or 3 for default implmeneted behaviour");
+            System.out.println(
+                    "is the Graph directed?\n type 1 for yes, 2 for no or 3 for default implemented behaviour (directed)");
             int directed = in.nextInt();
-            //Default behaviour is graph is directed
+            // Default behaviour for a graph is directed
             boolean isDirected = true;
-            switch(directed) {
-                case 2: 
-                isDirected = false;
-                break;
+            switch (directed) {
+                case 2:
+                    isDirected = false;
+                    break;
             }
 
             System.out.println("Name of the Benchmark File (from the input directory without .txt ending):\n");
             String benchmarkName = in.next();
             switch (input) {
                 case 1:
-                    performTopsort(benchmarkName,isDirected);
+                    performTopsort(benchmarkName, isDirected);
                     break;
                 case 2:
-                    performKruskal(benchmarkName,isDirected);
+                    performKruskal(benchmarkName, isDirected);
                     break;
                 case 3:
-                    performDijkstra(benchmarkName, 0,isDirected);
+                    performDijkstra(benchmarkName, 0, isDirected);
                     break;
 
             }

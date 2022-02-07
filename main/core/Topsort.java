@@ -52,21 +52,15 @@ public class Topsort {
      * @param nodeStack Stack of the DFS Nodes.
      */
     public static void DFSVist(Node n, Stack<Node> nodeStack) {
-        // System.out.println("Knoten: "+ n.NodeIndex);
-
         Topsort.totalTime++;
 
         n.discoverTime = Topsort.totalTime;
-        // System.out.println("Discovertime von Knoten "+n.NodeIndex+" beträgt
-        // "+n.discoverTime);
 
         n.visited = true;
 
         ArrayList<Node> nNeighborList = n.NeighbourList;
 
         for (Node neighbour : nNeighborList) {
-            // System.out.println("innerer Knoten: "+ neighbour.NodeIndex + "von Knoten:" +
-            // n.NodeIndex);
             if (!neighbour.visited) {
                 neighbour.preNode = n;
                 DFSVist(neighbour, nodeStack);
@@ -76,10 +70,6 @@ public class Topsort {
         Topsort.totalTime++;
         n.finishedTime = Topsort.totalTime;
         nodeStack.push(n);
-        // System.out.println(n.NodeIndex+" (Discovertime:"+n.discoverTime+" /
-        // Finishtime:"+n.finishedTime+")");
-        // System.out.println("Finish von Knoten "+n.NodeIndex+" beträgt
-        // "+n.finishedTime);
 
     }
 }
