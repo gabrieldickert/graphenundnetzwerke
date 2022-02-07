@@ -36,6 +36,7 @@ public class Dijkstra {
      * @param e an weighted Edge.
      */
     public static void relax(Node u, Node v, Edge w) {
+        
 
         if (v.d > u.d + (int) w.weight) {
             v.d = u.d + (int) w.weight;
@@ -73,11 +74,18 @@ public class Dijkstra {
             for (Node v : u.NeighbourList) {
 
                 for (Edge edge : u.EdgeList) {
-                    if ((edge.a.NodeIndex == u.NodeIndex && edge.b.NodeIndex == v.NodeIndex)
-                            || (edge.a.NodeIndex == v.NodeIndex && edge.b.NodeIndex == u.NodeIndex)) {
+
+                    //directed case
+                    if(edge.a.NodeIndex == u.NodeIndex && edge.b.NodeIndex == v.NodeIndex && !g.isUndirected) {
 
                         relax(u, v, edge);
                     }
+                    //undirected 
+                    else if(edge.a.NodeIndex == u.NodeIndex && edge.b.NodeIndex == v.NodeIndex && g.isUndirected || edge.b.NodeIndex == u.NodeIndex && edge.a.NodeIndex == v.NodeIndex && g.isUndirected ) {
+
+                        relax(u, v, edge);
+                    }
+
                 }
 
             }

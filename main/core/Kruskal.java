@@ -17,11 +17,9 @@ public class Kruskal {
 
         HashMap<Integer, HashSet<Integer>> forest = new HashMap<>();
 
-        HashSet<Float> weightSet = new HashSet<>();
-
-        for (Node n : g.NodeList) {
+        for (Node v : g.NodeList) {
             // Add Tree
-            forest.put(n.NodeIndex, makeSet(n));
+            forest.put(v.NodeIndex, makeSet(v));
 
         }
 
@@ -30,14 +28,24 @@ public class Kruskal {
 
         for (Edge e : g.EdgeList) {
 
-            weightSet.add(e.weight);
-        }
-
-        for (Edge e : g.EdgeList) {
+            HashSet<Integer> tree1 = findSet(forest, e.a);
+            HashSet<Integer> tree2 = findSet(forest, e.b);
 
             if (!findSet(forest, e.a).equals(findSet(forest, e.b))) {
-                kruskalList.add(e);
-                union(forest, e.a, e.b);
+
+                // Edge structure demands this
+                if (tree1.size() >= tree2.size()) {
+                    kruskalList.add(e);
+                    union(forest, e.a, e.b);
+
+                }
+
+                else if (tree1.size() < tree2.size()) {
+
+                    kruskalList.add(e);
+                    union(forest, e.b, e.a);
+
+                }
 
             }
         }
@@ -66,7 +74,7 @@ public class Kruskal {
     }
 
     /**
-     * Creates a tree ocntaing the Nodeindex as values.
+     * Creates a tree containing the Nodeindex as values.
      * 
      * @param n Node to Start from
      * @return newly created Tree
