@@ -22,17 +22,17 @@ public class Main {
      * 
      * @param filename File containing the Graph to perform Topsport onto.
      */
-    public static void performTopsort(String filename) {
+    public static void performTopsort(String filename,boolean isDirected) {
 
         System.out.println("------------BEGIN BENCHMARK FOR TOPSORT------------");
 
         Parser P = new Parser();
 
-        Graph g = P.parseGraphFromInput("input/" + filename + ".txt", true);
+        Graph g = P.parseGraphFromInput("input/" + filename + ".txt",isDirected);
 
-        g.isUndirected = false;
+        g.isUndirected = !isDirected;
 
-        ArrayList<Node> dfsList = DFS.printDFS(g);
+        ArrayList<Node> dfsList = Topsort.printDFS(g);
 
         for (int i = 0; i < dfsList.size(); i++) {
 
@@ -44,8 +44,8 @@ public class Main {
         GraphExporter.exportGraphToDOT(g, filename + ".dot");
 
         // Clear static dfs vals for multiple Usage
-        DFS.totalTime = 0;
-        DFS.dfsNodes = new ArrayList<>();
+        Topsort.totalTime = 0;
+        Topsort.dfsNodes = new ArrayList<>();
 
         System.out.println("\n------------BENCHMARK OVER TOPSORT------------");
     }
@@ -55,15 +55,15 @@ public class Main {
      * 
      * @param filename File containing the Graph to perform Kruskal onto.
      */
-    public static void performKruskal(String filename) {
+    public static void performKruskal(String filename,boolean isDirected) {
 
         System.out.println("------------BEGIN BENCHMARK FOR KRUSKAL------------");
 
         Parser P = new Parser();
 
-        Graph g = P.parseGraphFromInput("input/" + filename + ".txt", false);
+        Graph g = P.parseGraphFromInput("input/" + filename + ".txt", isDirected);
 
-        g.isUndirected = true;
+        g.isUndirected =!isDirected;
 
         LinkedList<Edge> tree = Kruskal.performKruskal(g);
 
@@ -88,17 +88,17 @@ public class Main {
      * @param filename  File containing the Graph to perform Dijkstra onto.
      * @param nodeIndex Node to start from (0 per Default but can be changed).
      */
-    public static void performDijkstra(String filename, int nodeIndex) {
+    public static void performDijkstra(String filename, int nodeIndex,boolean isDirected) {
         System.out.println("------------BEGIN BENCHMARK FOR DIJKSTRA------------");
 
         Parser P = new Parser();
         // false heißt ungerichtet
-        Graph g = P.parseGraphFromInput("input/" + filename + ".txt", true);
+        Graph g = P.parseGraphFromInput("input/" + filename + ".txt", isDirected);
         // true heißt ungerichtet
-        g.isUndirected = false;
+        g.isUndirected = !isDirected;
 
         LinkedList<Node> outputList = new LinkedList<>();
-        HashMap<Node, Integer> dijkstraResult = PathFinding.performDijkstra(g, g.NodeList.get(nodeIndex));
+        HashMap<Node, Integer> dijkstraResult = Dijkstra.performDijkstra(g, g.NodeList.get(nodeIndex));
         for (Node n : dijkstraResult.keySet()) {
             outputList.add(n);
         }
@@ -129,17 +129,27 @@ public class Main {
                 System.out.println("Bye");
                 break;
             }
-            System.out.print("Name of the Benchmark File (from the input directory without .txt ending):\n");
+            System.out.println("is the Graph directed?\n type 1 for yes, 2 for no or 3 for default implmeneted behaviour");
+            int directed = in.nextInt();
+            //Default behaviour is graph is directed
+            boolean isDirected = true;
+            switch(directed) {
+                case 2: 
+                isDirected = false;
+                break;
+            }
+
+            System.out.println("Name of the Benchmark File (from the input directory without .txt ending):\n");
             String benchmarkName = in.next();
             switch (input) {
                 case 1:
-                    performTopsort(benchmarkName);
+                    performTopsort(benchmarkName,isDirected);
                     break;
                 case 2:
-                    performKruskal(benchmarkName);
+                    performKruskal(benchmarkName,isDirected);
                     break;
                 case 3:
-                    performDijkstra(benchmarkName, 0);
+                    performDijkstra(benchmarkName, 0,isDirected);
                     break;
 
             }

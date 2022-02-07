@@ -9,7 +9,7 @@ import java.util.Queue;
 /**
  * Class for PathFinding Algorithm.
  */
-public class PathFinding {
+public class Dijkstra {
 
     /**
      * Prepare Nodes for Pathfinding Algorithm (e.g Dijkstra)

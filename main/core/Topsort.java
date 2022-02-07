@@ -8,7 +8,7 @@ import java.util.*;
  * Simple class for DFS.
  */
 
-public class DFS {
+public class Topsort {
     /**
      * Total Time of the DFS Process.
      */
@@ -54,9 +54,9 @@ public class DFS {
     public static void DFSVist(Node n, Stack<Node> nodeStack) {
         // System.out.println("Knoten: "+ n.NodeIndex);
 
-        DFS.totalTime++;
+        Topsort.totalTime++;
 
-        n.discoverTime = DFS.totalTime;
+        n.discoverTime = Topsort.totalTime;
         // System.out.println("Discovertime von Knoten "+n.NodeIndex+" beträgt
         // "+n.discoverTime);
 
@@ -73,8 +73,8 @@ public class DFS {
             }
         }
 
-        DFS.totalTime++;
-        n.finishedTime = DFS.totalTime;
+        Topsort.totalTime++;
+        n.finishedTime = Topsort.totalTime;
         nodeStack.push(n);
         // System.out.println(n.NodeIndex+" (Discovertime:"+n.discoverTime+" /
         // Finishtime:"+n.finishedTime+")");
